@@ -1,0 +1,32 @@
+# Decisions
+
+- Separate folder per assignment.
+- Shared tooling is allowed; shared assignment business logic is forbidden.
+- Preserve Russian learner-facing text where visible.
+- Use UTF-8 without BOM and prefer `mb_*` when Cyrillic correctness matters.
+- Materialized the repository bootstrap with only the canonical top-level folders and numbered assignment directories, so later tasks can fill behavior without cleanup.
+- Kept `AGENTS.md` aligned with the plan draft wording, including isolation, verification, and stop-condition rules for downstream executors.
+- Standardized every assignment spec to the same sections: source, goal, scope floor, deliverable shape, validations and defaults, forbidden overreach, and verification entrypoints.
+- Chose future-facing verification entrypoints in each spec that match the plan's intended harness shape, `tests/run.php` for CLI work and `public/` plus curl-oriented serving for browser work.
+- Added `scripts/php-lint-all.sh` as the single shared lint entrypoint for workspace PHP syntax checks, with explicit per-file pass/fail reporting and optional included fixture paths for controlled failure-mode verification.
+- Added `scripts/run-cli-assignments.sh` to run assignment runners strictly in `01..07` order and report deterministic run/skip/fail summaries while assignments remain partially implemented.
+- Added local scaffold-only `tests/run.php` placeholders under assignments `01..07` that return success with a "not implemented yet" notice, preserving assignment isolation and avoiding premature business logic.
+- Added `scripts/serve-assignment.sh` with strict validation for known web slugs, numeric port range, assignment/public path existence, and explicit non-zero errors for unknown slugs or missing prerequisites.
+- Added `scripts/run-web-smoke.sh` as a curl-first orchestrator for assignments `08..13`, with per-assignment fixed ports (`8090..8095`), deterministic start/stop behavior, and clear `[SKIP]` reporting for unimplemented targets.
+- Added a minimal `assignments/08-string-generation/public/index.php` placeholder solely to support required serve-harness happy-path wiring without implementing assignment business content.
+- Implemented `assignments/01-php-basics/index.php` as a single deterministic CLI script with tiny local helpers for UTF-8 length, last-character lookup, and geometry formulas.
+- Replaced the 01 scaffold runner with real assertions that check the rendered CLI lines plus direct Cyrillic and geometry helper cases.
+- Implemented `assignments/02-control-structures/index.php` as a local deterministic CLI script with pure helpers for season lookup, first-character checks, lucky six-digit validation, salary adjustments, looping, filtering, and aggregation.
+- Replaced the 02 scaffold runner with real assertions that cover valid and invalid lucky-number cases plus explicit rejection for out-of-range months.
+- Implemented `assignments/03-arrays/index.php` as an isolated deterministic CLI script covering every spec task: arithmetic on `[2,5,3,9]`, associative user data output, array fill/search/min-max/sum, `1..100` and `a..z` generation, loop-free `1..100` sum, seeded shuffle tasks, and six required sort demonstrations.
+- Replaced `assignments/03-arrays/tests/run.php` scaffold with real assertions for output lines and helpers, including 26-unique-letter alphabet validation, explicit key-preserving vs reindexing sort checks, and a source-level check that the no-loop sum helper does not use loop keywords.
+- Implemented `04-associative-arrays` as a self-contained CLI assignment with `index.php` and `tests/run.php` only.
+- Kept January at key `1` in a full months array and formatted the date as `Y-m-d` directly from a pure helper.
+- Chose `null` for missing last/penultimate values so short-array handling stays safe and easy to assert.
+- Implemented `assignments/05-multidimensional-arrays/index.php` with isolated local helpers for 2D summation, first+third salary extraction, books dataset formatting, disciplines HTML table rendering, and nested `group - user` traversal.
+- Replaced `assignments/05-multidimensional-arrays/tests/run.php` scaffold with real assertions that cover all required multidimensional tasks and explicit empty nested-list safety cases.
+- Implemented `assignments/06-user-functions/index.php` as a local CLI helper set with deterministic bare marker lines, prime/composite checks, adjacent-duplicate detection, and a direct `build_assignment_output()` entrypoint.
+- Replaced `assignments/06-user-functions/tests/run.php` scaffold with real assertions that verify both rendered CLI lines and direct return values for the helper functions.
+- Implemented `assignments/07-standard-functions/index.php` as an isolated deterministic CLI assignment with mb-safe last-character uppercasing, seeded random output, explicit date-part extraction, and year-agnostic New Year countdown logic.
+- Replaced `assignments/07-standard-functions/tests/run.php` scaffold with real assertions for all required standard-function exercises, including Cyrillic `mb_*` safety checks and a source-level guard against hardcoded years inside `days_until_new_year()`.
+- Implemented `assignments/08-string-generation/public/index.php` as a single HTML-first page with local escaping and SVG-data-URI helpers, and chose a query-parameter toggle (`?show=0`) so the conditional block is present by default but deterministically absent in fixture/smoke mode.

@@ -1,0 +1,30 @@
+# Learnings
+
+- The canonical root scaffold is `assignments/`, `scripts/`, `database/`, and `.sisyphus/`, with 13 numbered ASCII assignment slugs under `assignments/`.
+- Root guidance must keep assignments isolated, require UTF-8 without BOM, and allow shared tooling only under `scripts/`.
+- The per-assignment `SPEC.md` files should mirror the plan's normalized `S1` through `S13` entries closely, so later implementation work can stay local to each folder.
+- The underspecified assignments need their fixed defaults written directly into the local specs, especially HTTP status endpoints in assignment 10, regex policy in assignment 12, and the auth schema plus email uniqueness rules in assignment 13.
+- The canonical web assignment slugs for the shared serving harness are `08-string-generation`, `09-forms`, `10-http-basics`, `11-sessions`, `12-regex-validation`, and `13-auth-db-app`; stale alias names from older notes should not be used in scripts.
+- A reusable web smoke harness can stay lightweight and curl-first by starting one assignment-local PHP built-in server per slug/port pair and explicitly skipping assignments that do not yet have a `public/` entrypoint.
+- The CLI harness can stay useful during incremental implementation by treating missing `tests/run.php` as explicit skip events and by letting scaffold-level runners print deterministic "not implemented yet" messages.
+- A workspace-wide PHP lint helper should accept optional include paths so a temporary invalid fixture can prove clear failure behavior without committing broken files.
+- In this execution environment, no PHP binary is present on PATH, so harness scripts should fail fast with a single actionable message (`PHP_BIN` override hint) instead of emitting repeated command-not-found noise.
+- Assignment 13 now has a dedicated DB harness with `database/13-auth-db-app/schema.sql`, and reset/smoke scripts under `scripts/` that consume only `AUTH_DB_*` environment variables.
+- The schema bootstrap is deterministic (`DROP TABLE IF EXISTS users` then `CREATE TABLE users`) and enforces `email` uniqueness at DB level via `UNIQUE KEY users_email_unique (email)`.
+- PHP 8.5 and MySQL 9 are now installed locally via Homebrew in this environment, so harness verification can run for real instead of failing on missing binaries.
+- `scripts/reset-auth-db.sh` must build MySQL CLI arguments as a bash array; NUL-delimited serialization truncated the argument list and caused mysql to fall back to default local-user auth.
+- Assignment 01 can stay fully local with one `index.php` plus a real `tests/run.php`; the CLI runner is easiest to verify by requiring the script and asserting its pure output builder.
+- For Cyrillic-safe beginner text exercises, `mb_strlen(..., 'UTF-8')` and `mb_substr(..., -1, 1, 'UTF-8')` keep the string-length and last-character checks deterministic.
+- Assignment 02 fits the same local pattern: a single `index.php` with pure helpers plus `tests/run.php`, and month validation should throw on anything outside `1..12` instead of silently mapping it.
+- For the lucky-number exercise, six-digit guarding must happen before digit-sum comparison so non-six-digit values fail deterministically.
+- Assignment 03 also works cleanly with the same deterministic helper + `build_assignment_output()` pattern, and sort exercises are easiest to verify by asserting both rendered lines and exact post-sort key order.
+- For the explicit no-loop `1..100` sum requirement, using `array_sum(range(1, 100))` plus a source-level guard in tests prevents accidental loop regressions.
+- A seeded `shuffle` keeps learner-facing "random" tasks deterministic while still proving uniqueness constraints such as a 26-letter nonrepeating alphabet.
+- Assignment 04 fits the same local CLI pattern: keep the months list indexed from `1`, build the output with pure helpers, and test short-array safety by expecting `null` for missing last/penultimate values.
+- Assignment 05 can follow the same deterministic `build_assignment_output()` style while still embedding a real HTML `<table>` segment in CLI output for grep-based verification.
+- Keeping group/user data nested until traversal simplifies safe handling of empty nested lists; returning an empty pair list avoids warnings and keeps output deterministic.
+- Assignment 06 works cleanly as a fully local CLI helper set: bare marker lines (`+++` / `---`) are easiest to verify when the output builder emits them as standalone lines.
+- For prime checks, short-circuiting on `< 2`, `2`, and even numbers keeps the helper deterministic and makes composite coverage easy to assert in the local runner.
+- Assignment 07 can keep deterministic CLI output while still exercising date and random functions by using a fixed UTC reference timestamp and a seeded random helper, with tests asserting exact rendered lines and direct helper returns.
+- Year-agnostic New Year countdown logic is easiest to keep correct by deriving `next year` from the input date (`format('Y') + 1`) and diffing from the start of the same day, which keeps results stable for dates like Dec 30 across different years.
+- Assignment 08 works cleanly as a single `public/index.php` page: arrays plus `foreach`/`for` blocks cover every HTML-generation exercise, and inline SVG data URIs satisfy the image-tag requirement without introducing extra assignment files.
