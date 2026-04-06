@@ -354,7 +354,7 @@ Wave 2: mounted-route/stateful refactors + deployment automation (`6,7,8,9,10`)
 
   **Commit**: YES | Message: `fix(forms): make assignment 09 mounted-route safe` | Files: [`assignments/09-forms/public/`, `assignments/09-forms/src/helpers.php`]
 
-- [ ] 7. Refactor `10-http-basics` into a mounted router under `/10-http-basics`
+- [x] 7. Refactor `10-http-basics` into a mounted router under `/10-http-basics`
 
   **What to do**: Keep `10-http-basics` as a single-file router, but make route matching relative to `APP_REQUEST_PATH` instead of the global root path. All links, form actions, redirects, and Location headers must resolve under `/10-http-basics`, while still exposing the original logical subroutes: `/method`, `/headers`, `/status/200`, `/status/302`, `/status/400`, `/status/404`, and `/redirect-target`.
   **Must NOT do**: Do not split the assignment into multiple controllers; do not lose exact status-code behavior.

@@ -8,10 +8,52 @@ function escape_html(string $value): string
 
 function request_path(): string
 {
+    $appRequestPath = $_SERVER['APP_REQUEST_PATH'] ?? null;
+    if (is_string($appRequestPath) && $appRequestPath !== '') {
+        return $appRequestPath;
+    }
+
     $uri = $_SERVER['REQUEST_URI'] ?? '/';
     $path = parse_url($uri, PHP_URL_PATH);
 
-    return is_string($path) && $path !== '' ? $path : '/';
+    if (!is_string($path) || $path === '') {
+        return '/';
+    }
+
+    $basePath = app_base_path();
+    $basePathPrefix = $basePath === '/' ? '/' : $basePath . '/';
+    if ($path === $basePath) {
+        $path = '/';
+    } elseif ($basePath !== '/' && strncmp($path, $basePathPrefix, strlen($basePathPrefix)) === 0) {
+        $path = substr($path, strlen($basePath));
+    }
+
+    return $path !== '' ? $path : '/';
+}
+
+function app_base_path(): string
+{
+    $basePath = $_SERVER['APP_BASE_PATH'] ?? '';
+
+    if (!is_string($basePath) || $basePath === '') {
+        return '/';
+    }
+
+    return rtrim($basePath, '/') ?: '/';
+}
+
+function app_url(string $path = ''): string
+{
+    $basePath = app_base_path();
+    $normalizedPath = ltrim($path, '/');
+
+    if ($normalizedPath === '') {
+        return $basePath;
+    }
+
+    return $basePath === '/'
+        ? '/' . $normalizedPath
+        : $basePath . '/' . $normalizedPath;
 }
 
 function send_html(int $statusCode, string $html, array $headers = []): void
@@ -76,27 +118,31 @@ function render_home_page(): string
     $accept = $_SERVER['HTTP_ACCEPT'] ?? 'не передан';
     $acceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'не передан';
     $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+    $appBasePath = app_base_path();
 
     return '<!doctype html>'
-        . '<html lang="ru"><head><meta charset="UTF-8"><title>10 HTTP Basics</title></head><body>'
+        . '<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>10 HTTP Basics</title><link rel="stylesheet" href="/assets/launchpad.css"><style>main{max-width:960px;margin:0 auto;padding:24px}.assignment-shell{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:24px;box-shadow:var(--shadow-sm)}ul{display:grid;gap:8px}form{margin-top:16px}button{font:inherit;padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--color-border-strong);background:#0f172a;color:#ffffff;cursor:pointer}.assignment-meta{color:var(--color-text-muted);font-size:14px}</style></head><body data-app-base-path="' . escape_html($appBasePath) . '">' 
+        . '<header class="launchpad-header"><a class="home-logo" data-home-logo href="/"><img class="home-logo-icon" src="/assets/logo.svg" alt=""><span>Launchpad</span></a></header>'
         . '<main>'
+        . '<article class="assignment-shell">'
         . '<h1>Практика по HTTP в PHP</h1>'
         . '<p>Текущий метод: <strong>' . escape_html($method) . '</strong></p>'
         . '<p>Accept: <strong>' . escape_html($accept) . '</strong></p>'
         . '<p>Accept-Language: <strong>' . escape_html($acceptLanguage) . '</strong></p>'
+        . '<p class="assignment-meta">Базовый путь страницы: <code>' . escape_html($appBasePath) . '</code>.</p>'
         . '<ul>'
-        . '<li><a href="/method">/method</a> — определить GET или POST</li>'
-        . '<li><a href="/headers">/headers</a> — список всех заголовков</li>'
-        . '<li><a href="/status/200">/status/200</a></li>'
-        . '<li><a href="/status/302">/status/302</a></li>'
-        . '<li><a href="/status/400">/status/400</a></li>'
-        . '<li><a href="/status/404">/status/404</a></li>'
-        . '<li><a href="/redirect-target">/redirect-target</a> — цель редиректа 302</li>'
+        . '<li><a href="' . escape_html(app_url('method')) . '">/method</a> — определить GET или POST</li>'
+        . '<li><a href="' . escape_html(app_url('headers')) . '">/headers</a> — список всех заголовков</li>'
+        . '<li><a href="' . escape_html(app_url('status/200')) . '">/status/200</a></li>'
+        . '<li><a href="' . escape_html(app_url('status/302')) . '">/status/302</a></li>'
+        . '<li><a href="' . escape_html(app_url('status/400')) . '">/status/400</a></li>'
+        . '<li><a href="' . escape_html(app_url('status/404')) . '">/status/404</a></li>'
+        . '<li><a href="' . escape_html(app_url('redirect-target')) . '">/redirect-target</a> — цель редиректа 302</li>'
         . '</ul>'
-        . '<form action="/method" method="post">'
+        . '<form action="' . escape_html(app_url('method')) . '" method="post">'
         . '<button type="submit">Отправить POST на /method</button>'
         . '</form>'
-        . '</main></body></html>';
+        . '</article></main></body></html>';
 }
 
 $path = request_path();
@@ -134,7 +180,7 @@ if (preg_match('#^/status/(200|302|400|404)$#', $path, $matches) === 1) {
     $statusCode = (int) $matches[1];
 
     if ($statusCode === 302) {
-        send_text(302, 'Временный редирект на /redirect-target', ['Location' => '/redirect-target']);
+        send_text(302, 'Временный редирект на /redirect-target', ['Location' => app_url('redirect-target')]);
     }
 
     $messages = [

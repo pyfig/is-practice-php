@@ -8,7 +8,8 @@
     "ses_29efba829ffe0mq75Ro4wRqg0j",
     "ses_29ef82e91ffeChMzu4ffOZ0FFW",
     "ses_29ef5ec4dffebzdr0c1lQPHCah",
-    "ses_29ef08ed8ffewsu6KkWG3kP81b"
+    "ses_29ef08ed8ffewsu6KkWG3kP81b",
+    "ses_29ee1f1c2ffec6zAu1S69pOICD"
   ],
   "plan_name": "vercel-launchpad-deploy",
   "agent": "atlas",
@@ -66,6 +67,15 @@
       "agent": "Sisyphus-Junior",
       "category": "unspecified-high",
       "updated_at": "2026-04-06T04:35:44.936Z"
+    },
+    "todo:7": {
+      "task_key": "todo:7",
+      "task_label": "7",
+      "task_title": "Refactor `10-http-basics` into a mounted router under `/10-http-basics`",
+      "session_id": "ses_29ee1f1c2ffec6zAu1S69pOICD",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-04-06T04:51:01.832Z"
     }
   }
 }
