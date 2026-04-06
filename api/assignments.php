@@ -104,8 +104,91 @@ function dispatch_vercel_request(): void
 
     vercel_expose_assignment_context($assignment['slug'], $mountedRequestPath, $targetFile);
 
+    // Output home navigation header before assignment content
+    vercel_output_home_header($slug);
+
     require $targetFile;
     exit;
+}
+
+function vercel_output_home_header(string $currentSlug): void
+{
+    $homeUrl = '/';
+    $assignmentMeta = vercel_get_assignment_metadata();
+    $currentTitle = $assignmentMeta[$currentSlug]['title'] ?? $currentSlug;
+
+    echo '<style>
+        .home-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .home-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #007AFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .home-link:hover {
+            background: #0051D5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+        .home-link:active {
+            transform: scale(0.98);
+        }
+        .home-link svg {
+            width: 18px;
+            height: 18px;
+        }
+        .current-page {
+            font-size: 0.875rem;
+            color: #666;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            padding-top: 60px !important;
+        }
+    </style>';
+
+    echo '<nav class="home-nav" role="navigation" aria-label="Главная навигация">';
+    echo '    <div class="home-nav-content">';
+    echo '        <span class="current-page">' . vercel_escape_html($currentTitle) . '</span>';
+    echo '        <a href="' . $homeUrl . '" class="home-link" aria-label="Вернуться на главную">';
+    echo '            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+    echo '                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>';
+    echo '                <polyline points="9 22 9 12 15 12 15 22"/>';
+    echo '            </svg>';
+    echo '            <span>На главную</span>';
+    echo '        </a>';
+    echo '    </div>';
+    echo '</nav>';
 }
 
 function vercel_incoming_request_path(): string
@@ -233,7 +316,7 @@ function vercel_render_root_placeholder(array $manifest): void
     echo '<head>' . "\n";
     echo '    <meta charset="UTF-8">' . "\n";
     echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
-    echo '    <title>Launchpad - 13 Практических Работ</title>' . "\n";
+    echo '    <title>Labs </title>' . "\n";
     echo '    <style>' . vercel_get_launchpad_styles() . '</style>' . "\n";
     echo '</head>' . "\n";
     echo '<body>' . "\n";
