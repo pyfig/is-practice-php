@@ -224,14 +224,16 @@ function vercel_render_root_placeholder(array $manifest): void
     http_response_code(200);
     header('Content-Type: text/html; charset=UTF-8');
 
-    $tasks = vercel_get_task_manifest();
+    $assignments = vercel_get_assignment_metadata();
+    $colors = ['blue', 'purple', 'green', 'orange', 'red', 'teal', 'indigo', 'pink', 'yellow', 'cyan', 'blue', 'purple', 'green'];
+    $colorIndex = 0;
 
     echo '<!DOCTYPE html>' . "\n";
     echo '<html lang="ru">' . "\n";
     echo '<head>' . "\n";
     echo '    <meta charset="UTF-8">' . "\n";
     echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
-    echo '    <title>Launchpad - 96 Практических Заданий</title>' . "\n";
+    echo '    <title>Launchpad - 13 Практических Работ</title>' . "\n";
     echo '    <style>' . vercel_get_launchpad_styles() . '</style>' . "\n";
     echo '</head>' . "\n";
     echo '<body>' . "\n";
@@ -247,7 +249,7 @@ function vercel_render_root_placeholder(array $manifest): void
     echo '            <div class="search-container" role="search">' . "\n";
     echo '                <div class="search-wrapper">' . "\n";
     echo '                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' . "\n";
-    echo '                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск среди 96 заданий..." aria-label="Поиск заданий по названию" autocomplete="off"/>' . "\n";
+    echo '                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск работ..." aria-label="Поиск работ по названию" autocomplete="off"/>' . "\n";
     echo '                    <button class="search-clear" id="searchClear" aria-label="Очистить поиск" type="button">' . "\n";
     echo '                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>' . "\n";
     echo '                    </button>' . "\n";
@@ -259,19 +261,20 @@ function vercel_render_root_placeholder(array $manifest): void
 
     echo '    <main class="launchpad-main" role="main">' . "\n";
     echo '        <div class="launchpad-content">' . "\n";
-    echo '            <h1 class="launchpad-title">96 Практических Заданий</h1>' . "\n";
+    echo '            <h1 class="launchpad-title">13 Практических Работ</h1>' . "\n";
     echo '            <div class="project-grid" id="projectGrid" role="list">' . "\n";
 
-    foreach ($tasks as $task) {
-        $taskNumber = sprintf('%02d', $task['id']);
-        $initials = vercel_get_initials($task['title']);
-        $searchData = vercel_escape_html(strtolower($task['title'] . ' ' . $task['description'] . ' ' . $task['assignmentTitle']));
+    foreach ($assignments as $slug => $meta) {
+        $color = $colors[$colorIndex % count($colors)];
+        $colorIndex++;
+        $initials = vercel_get_initials($meta['title']);
+        $searchData = vercel_escape_html(strtolower($meta['title'] . ' ' . $meta['description']));
 
-        echo '                <a href="/' . vercel_escape_html($task['assignment']) . '" class="project-card" role="listitem" data-project-name="' . $searchData . '" aria-label="' . vercel_escape_html($task['title']) . ': ' . vercel_escape_html($task['description']) . '">' . "\n";
-        echo '                    <div class="project-icon icon-' . $task['color'] . '">' . $initials . '</div>' . "\n";
+        echo '                <a href="/' . vercel_escape_html($slug) . '" class="project-card" role="listitem" data-project-name="' . $searchData . '" aria-label="' . vercel_escape_html($meta['title']) . ': ' . vercel_escape_html($meta['description']) . '">' . "\n";
+        echo '                    <div class="project-icon icon-' . $color . '">' . $initials . '</div>' . "\n";
         echo '                    <div class="project-info">' . "\n";
-        echo '                        <span class="project-name">' . $taskNumber . ' ' . vercel_escape_html($task['title']) . '</span>' . "\n";
-        echo '                        <span class="project-subtitle">' . vercel_escape_html($task['description']) . '</span>' . "\n";
+        echo '                        <span class="project-name">' . vercel_escape_html($meta['title']) . '</span>' . "\n";
+        echo '                        <span class="project-subtitle">' . vercel_escape_html($meta['description']) . '</span>' . "\n";
         echo '                    </div>' . "\n";
         echo '                </a>' . "\n";
     }
@@ -282,7 +285,7 @@ function vercel_render_root_placeholder(array $manifest): void
     echo '                <div class="empty-state-icon">' . "\n";
     echo '                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>' . "\n";
     echo '                </div>' . "\n";
-    echo '                <h2 class="empty-state-title">Задания не найдены</h2>' . "\n";
+    echo '                <h2 class="empty-state-title">Работы не найдены</h2>' . "\n";
     echo '                <p class="empty-state-message">По вашему запросу ничего не найдено. Попробуйте другие ключевые слова.</p>' . "\n";
     echo '                <button class="empty-state-clear" id="emptyStateClear">Очистить поиск</button>' . "\n";
     echo '            </div>' . "\n";
