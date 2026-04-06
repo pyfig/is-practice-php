@@ -104,10 +104,15 @@ function dispatch_vercel_request(): void
 
     vercel_expose_assignment_context($assignment['slug'], $mountedRequestPath, $targetFile);
 
+    // Start output buffering to capture assignment output
+    ob_start();
+    require $targetFile;
+    $assignmentOutput = ob_get_clean();
+    
     // Output home navigation header before assignment content
     vercel_output_home_header($slug);
-
-    require $targetFile;
+    
+    echo $assignmentOutput;
     exit;
 }
 
@@ -466,7 +471,7 @@ body {
     left: 0;
     right: 0;
     z-index: 100;
-    padding: var(--space-lg) var(--space-xl);
+    padding: var(--space-sm) var(--space-md);
     background: var(--glass-bg);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -478,26 +483,28 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: var(--space-lg);
+    justify-content: center;
+    gap: var(--space-md);
 }
 
 .header-brand {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
-    font-size: 1.5rem;
+    gap: var(--space-xs);
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: -0.02em;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
 }
 
 .header-brand-icon {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -505,15 +512,15 @@ body {
 }
 
 .header-brand-icon svg {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     fill: white;
 }
 
 .search-container {
     position: relative;
     width: 100%;
-    max-width: 600px;
+    max-width: 300px;
 }
 
 .search-wrapper {
@@ -524,9 +531,9 @@ body {
 
 .search-icon {
     position: absolute;
-    left: var(--space-md);
-    width: 20px;
-    height: 20px;
+    left: var(--space-sm);
+    width: 16px;
+    height: 16px;
     color: var(--text-muted);
     pointer-events: none;
     transition: color var(--transition-fast);
@@ -534,13 +541,13 @@ body {
 
 .search-input {
     width: 100%;
-    padding: var(--space-md) var(--space-md) var(--space-md) 3rem;
-    font-size: 1rem;
+    padding: var(--space-sm) var(--space-sm) var(--space-sm) 2rem;
+    font-size: 0.875rem;
     font-family: var(--font-sans);
     color: var(--text-primary);
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-lg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     outline: none;
@@ -566,9 +573,9 @@ body {
 
 .search-clear {
     position: absolute;
-    right: var(--space-sm);
-    width: 28px;
-    height: 28px;
+    right: var(--space-xs);
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -591,26 +598,14 @@ body {
 
 .search-clear.visible { opacity: 1; visibility: visible; }
 
-.search-clear svg { width: 14px; height: 14px; }
+.search-clear svg { width: 12px; height: 12px; }
 
 .search-results-info {
-    position: absolute;
-    top: calc(100% + var(--space-sm));
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: all var(--transition-normal);
-    pointer-events: none;
+    display: none;
 }
 
-.search-results-info.visible { opacity: 1; transform: translateY(0); }
-
 .launchpad-main {
-    padding-top: 180px;
+    padding-top: 80px;
     padding-bottom: var(--space-3xl);
     min-height: 100vh;
     display: flex;
@@ -626,9 +621,9 @@ body {
 
 .launchpad-title {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 600;
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--space-xl);
     letter-spacing: -0.02em;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
