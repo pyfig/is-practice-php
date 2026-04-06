@@ -327,7 +327,7 @@ function vercel_render_root_placeholder(array $manifest): void
     echo '                <div class="header-brand-icon">' . "\n";
     echo '                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>' . "\n";
     echo '                </div>' . "\n";
-    echo '                <span>Launchpad</span>' . "\n";
+    echo '                <span>Labs</span>' . "\n";
     echo '            </div>' . "\n";
     echo '            <div class="search-container" role="search">' . "\n";
     echo '                <div class="search-wrapper">' . "\n";
