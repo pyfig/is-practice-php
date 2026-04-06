@@ -225,6 +225,10 @@ function vercel_render_root_placeholder(array $manifest): void
     header('Content-Type: text/html; charset=UTF-8');
 
     $assignments = vercel_get_assignment_metadata();
+    $totalCount = count($assignments);
+    $cliCount = count(array_filter($assignments, fn($m) => $m['type'] === 'cli'));
+    $webCount = count(array_filter($assignments, fn($m) => $m['type'] === 'web'));
+    $statefulCount = count(array_filter($assignments, fn($m) => $m['type'] === 'stateful'));
 
     echo '<!doctype html>' . "\n";
     echo '<html lang="ru">' . "\n";
@@ -232,30 +236,46 @@ function vercel_render_root_placeholder(array $manifest): void
     echo '    <meta charset="UTF-8">' . "\n";
     echo '    <meta name="viewport" content="width=device-width, initial-scale=1">' . "\n";
     echo '    <title>labs</title>' . "\n";
+    echo '    <link rel="stylesheet" href="/assets/launchpad.css">' . "\n";
     echo '</head>' . "\n";
     echo '<body>' . "\n";
     echo '    <header class="launchpad-header">' . "\n";
     echo '        <a href="/" class="home-logo" data-home-logo>labs</a>' . "\n";
     echo '    </header>' . "\n";
-    echo '    <main class="launchpad-main">' . "\n";
-    echo '        <h1 class="launchpad-title">Практические задания</h1>' . "\n";
+    echo '    <main class="launchpad-container">' . "\n";
+    echo '        <section class="launchpad-hero">' . "\n";
+    echo '            <h1 class="launchpad-hero-title">Практические задания по PHP</h1>' . "\n";
+    echo '            <p class="launchpad-hero-subtitle">13 интерактивных заданий от базового синтаксиса до работы с базами данных и сессиями</p>' . "\n";
+    echo '            <div class="launchpad-stats">' . "\n";
+    echo '                <div class="stat-item"><div class="stat-value">' . $cliCount . '</div><div class="stat-label">CLI</div></div>' . "\n";
+    echo '                <div class="stat-item"><div class="stat-value">' . $webCount . '</div><div class="stat-label">Web</div></div>' . "\n";
+    echo '                <div class="stat-item"><div class="stat-value">' . $statefulCount . '</div><div class="stat-label">Stateful</div></div>' . "\n";
+    echo '            </div>' . "\n";
+    echo '        </section>' . "\n";
     echo '        <div class="launchpad-grid" data-launchpad-grid>' . "\n";
 
+    $counter = 1;
     foreach ($assignments as $slug => $meta) {
         $typeClass = 'card-badge--' . $meta['type'];
         $typeLabel = $meta['type'] === 'cli' ? 'CLI' : ($meta['type'] === 'web' ? 'Web' : 'Stateful');
 
         echo '            <a href="/' . vercel_escape_html($slug) . '" class="assignment-card" data-assignment-card data-assignment-slug="' . vercel_escape_html($slug) . '" data-assignment-type="' . vercel_escape_html($meta['type']) . '" data-assignment-description="' . vercel_escape_html($meta['description']) . '">' . "\n";
+        echo '                <div class="card-number">' . sprintf('%02d', $counter) . '</div>' . "\n";
         echo '                <div class="card-header">' . "\n";
         echo '                    <span class="card-title">' . vercel_escape_html($meta['title']) . '</span>' . "\n";
         echo '                    <span class="card-badge ' . $typeClass . '">' . $typeLabel . '</span>' . "\n";
         echo '                </div>' . "\n";
         echo '                <p class="card-description">' . vercel_escape_html($meta['description']) . '</p>' . "\n";
+        echo '                <div class="card-arrow">→</div>' . "\n";
         echo '            </a>' . "\n";
+        $counter++;
     }
 
     echo '        </div>' . "\n";
     echo '    </main>' . "\n";
+    echo '    <footer class="launchpad-footer">' . "\n";
+    echo '        <p>PHP Practice Labs • 13 Assignments</p>' . "\n";
+    echo '    </footer>' . "\n";
     echo '</body>' . "\n";
     echo '</html>' . "\n";
     exit;
