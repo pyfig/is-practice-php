@@ -432,7 +432,7 @@ Wave 2: mounted-route/stateful refactors + deployment automation (`6,7,8,9,10`)
 
   **Commit**: YES | Message: `refactor(sessions): replace assignment 11 native sessions with signed cookie state` | Files: [`assignments/11-sessions/src/bootstrap.php`, `assignments/11-sessions/public/`]
 
-- [ ] 9. Refactor `13-auth-db-app` to use a DB-backed opaque auth cookie and mounted routes
+- [x] 9. Refactor `13-auth-db-app` to use a DB-backed opaque auth cookie and mounted routes
 
   **What to do**: Remove dependency on native PHP session storage from assignment `13`. Keep the `users` table and add a deployment support table `user_sessions(id, user_id, token_hash, created_at, expires_at, last_seen_at)` in `database/13-auth-db-app/schema.sql`. Implement auth as an opaque random token stored hashed in MySQL, delivered via a cookie named `assignment13_auth`, path-scoped to `/13-auth-db-app`, with `HttpOnly`, `SameSite=Lax`, and `Secure` in production. Replace session flash usage with query-status redirects or a short-lived dedicated flash cookie; mounted navigation and redirects must resolve under `/13-auth-db-app`. Use `.env.vercel.local` as the local source of `AUTH_DB_*` and `ASSIGNMENT13_AUTH_SECRET` during verification.
   **Must NOT do**: Do not keep `session_start()` on Vercel paths; do not store plain-text tokens in the DB; do not leave logout as cookie deletion only - it must also invalidate the DB row.

@@ -9,7 +9,9 @@ function auth_db_config(): array
 
     foreach ($keys as $key) {
         $value = getenv($key);
-        if ($value === false || $value === '') {
+        $requiresNonEmptyValue = $key !== 'AUTH_DB_PASSWORD';
+
+        if ($value === false || ($requiresNonEmptyValue && $value === '')) {
             $missing[] = $key;
             continue;
         }

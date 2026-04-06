@@ -73,5 +73,6 @@ if ! output=$(MYSQL_PWD="$AUTH_DB_PASSWORD" mysql "${MYSQL_ARGS[@]}" "$AUTH_DB_N
 fi
 
 run_mysql_sql "SELECT 1 FROM information_schema.tables WHERE table_schema = '$AUTH_DB_NAME' AND table_name = 'users' LIMIT 1;"
+run_mysql_sql "SELECT 1 FROM information_schema.tables WHERE table_schema = '$AUTH_DB_NAME' AND table_name = 'user_sessions' LIMIT 1;"
 
-printf 'Database reset complete: %s.users recreated successfully.\n' "$AUTH_DB_NAME"
+printf 'Database reset complete: %s.users and %s.user_sessions recreated successfully.\n' "$AUTH_DB_NAME" "$AUTH_DB_NAME"

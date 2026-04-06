@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require dirname(__DIR__) . '/src/bootstrap.php';
-require_once dirname(__DIR__) . '/src/db.php';
+require_once dirname(__DIR__) . '/src/auth.php';
 
 $user = current_auth_user();
 $resolved = auth_db_config();

@@ -17,8 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($errors === []) {
         try {
             register_user($fullName, $email, $password);
-            set_flash('success', 'Регистрация прошла успешно. Теперь войдите в систему.');
-            redirect_to('/login.php');
+            redirect_to('/login.php?status=registered');
         } catch (RuntimeException $exception) {
             $errors[] = $exception->getMessage();
         } catch (Throwable $throwable) {
@@ -36,7 +35,7 @@ if ($errors !== []) {
     $content .= '</ul></section>';
 }
 
-$content .= '<form method="post">'
+$content .= '<form method="post" action="' . escape_html(app_url('/register.php')) . '">'
     . '<label>Полное имя<input type="text" name="full_name" value="' . escape_html($fullName) . '"></label>'
     . '<label>Email<input type="email" name="email" value="' . escape_html($email) . '"></label>'
     . '<label>Пароль<input type="password" name="password"></label>'

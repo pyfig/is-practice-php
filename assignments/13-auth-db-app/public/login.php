@@ -20,10 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($errors === []) {
         try {
-            $user = authenticate_user($email, $password);
-            store_auth_user($user);
-            set_flash('success', 'Вход выполнен успешно.');
-            redirect_to('/');
+            login_user($email, $password);
+            redirect_to('/?status=logged-in');
         } catch (RuntimeException $exception) {
             $errors[] = $exception->getMessage();
         } catch (Throwable $throwable) {
@@ -41,7 +39,7 @@ if ($errors !== []) {
     $content .= '</ul></section>';
 }
 
-$content .= '<form method="post">'
+$content .= '<form method="post" action="' . escape_html(app_url('/login.php')) . '">'
     . '<label>Email<input type="email" name="email" value="' . escape_html($email) . '"></label>'
     . '<label>Пароль<input type="password" name="password"></label>'
     . '<button type="submit">Войти</button>'
