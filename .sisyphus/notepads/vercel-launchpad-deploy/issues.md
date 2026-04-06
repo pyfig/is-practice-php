@@ -1,1 +1,2 @@
 - 2026-04-06: PHP LSP diagnostics could not run because `intelephense` is not installed in the environment; verification used `php -l` plus router smoke checks instead.
+- 2026-04-06: `vercel dev` currently exits with `vercel-php` builder error (`vercel dev is not supported right now`), so mounted-route verification had to use `php -S 127.0.0.1:<port> api/index.php` instead.

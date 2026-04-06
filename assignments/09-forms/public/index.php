@@ -6,6 +6,7 @@ require dirname(__DIR__) . '/src/helpers.php';
 $activeTask = get_post_string('task');
 $responseTitle = '';
 $responseMessage = '';
+$appBasePath = app_base_path();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($activeTask) {
@@ -158,23 +159,36 @@ http_response_code(200);
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>09 Forms</title>
+    <link rel="stylesheet" href="/assets/launchpad.css">
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.5; margin: 0; background: #f8fafc; color: #0f172a; }
         main { max-width: 960px; margin: 0 auto; padding: 24px; }
-        section { background: #ffffff; border: 1px solid #cbd5e1; padding: 16px; margin-bottom: 16px; }
+        .assignment-shell { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); }
+        section { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
         form { display: grid; gap: 10px; }
         label { display: grid; gap: 4px; }
         fieldset { border: 1px solid #cbd5e1; padding: 12px; }
-        input, textarea, select, button { font: inherit; padding: 8px; }
-        button { width: fit-content; cursor: pointer; }
+        input, textarea, select, button { font: inherit; padding: 8px; border-radius: var(--radius-sm); }
+        input, textarea, select { border: 1px solid #cbd5e1; }
+        button { width: fit-content; cursor: pointer; border: 1px solid var(--color-border-strong); background: #0f172a; color: #ffffff; }
         .inline-options { display: flex; gap: 16px; flex-wrap: wrap; }
+        .assignment-description { color: var(--color-text-muted); }
+        .assignment-meta { color: var(--color-text-muted); font-size: 14px; }
     </style>
 </head>
-<body>
+<body data-app-base-path="<?= escape_html($appBasePath) ?>">
+<header class="launchpad-header">
+    <a class="home-logo" data-home-logo href="<?= escape_html(app_url()) ?>">
+        <img class="home-logo-icon" src="/assets/logo.svg" alt="">
+        <span>Launchpad</span>
+    </a>
+</header>
 <main>
+    <article class="assignment-shell">
     <h1>Практика по формам в PHP</h1>
-    <p>На странице собраны отдельные упражнения по GET, POST и обработке форм без сессий и базы данных.</p>
+    <p class="assignment-description">На странице собраны отдельные упражнения по GET, POST и обработке форм без сессий и базы данных.</p>
+    <p class="assignment-meta">Базовый путь страницы: <code><?= escape_html($appBasePath) ?></code>.</p>
 
     <?php if ($responseTitle !== '' && $responseMessage !== ''): ?>
         <?= render_alert($responseTitle, $responseMessage) ?>
@@ -182,7 +196,7 @@ http_response_code(200);
 
     <section>
         <h2>1. Форма name / age / salary через GET</h2>
-        <form action="/result.php" method="get">
+        <form action="<?= escape_html(app_url('result.php')) ?>" method="get">
             <label>Имя <input type="text" name="name"></label>
             <label>Возраст <input type="text" name="age"></label>
             <label>Зарплата <input type="text" name="salary"></label>
@@ -192,7 +206,7 @@ http_response_code(200);
 
     <section>
         <h2>2. Форма name / age / salary через POST</h2>
-        <form action="/result.php" method="post">
+        <form action="<?= escape_html(app_url('result.php')) ?>" method="post">
             <label>Имя <input type="text" name="name"></label>
             <label>Возраст <input type="text" name="age"></label>
             <label>Зарплата <input type="text" name="salary"></label>
@@ -301,6 +315,7 @@ http_response_code(200);
             <button type="submit">Показать статистику</button>
         </form>
     </section>
+    </article>
 </main>
 </body>
 </html>

@@ -1,6 +1,31 @@
 <?php
 declare(strict_types=1);
 
+function app_base_path(): string
+{
+    $basePath = $_SERVER['APP_BASE_PATH'] ?? '/09-forms';
+
+    if (!is_string($basePath) || $basePath === '') {
+        return '/09-forms';
+    }
+
+    return rtrim($basePath, '/') ?: '/';
+}
+
+function app_url(string $path = ''): string
+{
+    $basePath = app_base_path();
+    $normalizedPath = ltrim($path, '/');
+
+    if ($normalizedPath === '') {
+        return $basePath;
+    }
+
+    return $basePath === '/'
+        ? '/' . $normalizedPath
+        : $basePath . '/' . $normalizedPath;
+}
+
 function escape_html(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');

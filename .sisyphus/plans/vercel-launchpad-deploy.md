@@ -314,7 +314,7 @@ Wave 2: mounted-route/stateful refactors + deployment automation (`6,7,8,9,10`)
 
   **Commit**: YES | Message: `feat(ui): align assignments 08 and 12 with launchpad shell` | Files: [`assignments/08-string-generation/public/index.php`, `assignments/12-regex-validation/public/index.php`, `public/assets/launchpad.css`]
 
-- [ ] 6. Refactor `09-forms` for mounted routes and local URL helpers
+- [x] 6. Refactor `09-forms` for mounted routes and local URL helpers
 
   **What to do**: Add assignment-local helpers to `09-forms` so every link/form action is generated relative to `APP_BASE_PATH`. Replace hardcoded root usages (`action="/result.php"`, `href="/"`) with `app_url()` or equivalent local helper calls, and ensure both GET and POST flows still work when mounted at `/09-forms`.
   **Must NOT do**: Do not centralize form helper logic outside the assignment; do not break direct GET vs POST distinction.

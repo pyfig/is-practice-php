@@ -7,3 +7,4 @@
 - 2026-04-06: Updating only `api/assignments.php` entries is enough to mount the new wrapper pages at the short slug routes.
 - 2026-04-06: Safe single-page assignments can align with the launchpad shell by adding the shared header/logo, linking `/assets/launchpad.css`, and exposing `APP_BASE_PATH`/`APP_REQUEST_PATH` on the page without changing assignment logic.
 - 2026-04-06: For mounted single-endpoint forms like `12-regex-validation`, setting `action` to `APP_BASE_PATH` makes the mounted-route contract explicit while preserving the original POST validation flow.
+- 2026-04-06: Assignment `09-forms` can stay isolated by adding local `app_base_path()` and `app_url()` helpers in `src/helpers.php`; explicit `action`/`href` values should use those helpers only where the flow leaves the current script (`result.php` and the assignment home link).

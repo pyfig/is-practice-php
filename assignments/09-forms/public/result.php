@@ -7,6 +7,7 @@ $requestData = $_SERVER['REQUEST_METHOD'] === 'POST' ? $_POST : $_GET;
 $name = get_request_string($requestData, 'name');
 $ageRaw = get_request_string($requestData, 'age');
 $salaryRaw = get_request_string($requestData, 'salary');
+$appBasePath = app_base_path();
 
 $errors = [];
 if ($name === '') {
@@ -29,13 +30,27 @@ http_response_code(200);
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>09 Forms — result.php</title>
+    <link rel="stylesheet" href="/assets/launchpad.css">
+    <style>
+        .assignment-page { max-width: 760px; margin: 0 auto; padding: var(--spacing-xl); }
+        .assignment-shell { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-xl); box-shadow: var(--shadow-sm); }
+        .back-link { color: var(--color-text-muted); }
+    </style>
 </head>
-<body>
-<main>
+<body data-app-base-path="<?= escape_html($appBasePath) ?>">
+<header class="launchpad-header">
+    <a class="home-logo" data-home-logo href="<?= escape_html(app_url()) ?>">
+        <img class="home-logo-icon" src="/assets/logo.svg" alt="">
+        <span>Launchpad</span>
+    </a>
+</header>
+<main class="assignment-page">
+    <article class="assignment-shell">
     <h1>Результат формы name / age / salary</h1>
     <p>Метод запроса: <strong><?= escape_html($_SERVER['REQUEST_METHOD'] ?? 'GET') ?></strong></p>
-    <p><a href="/">Вернуться на главную страницу задания</a></p>
+    <p><a class="back-link" href="<?= escape_html(app_url()) ?>">Вернуться на главную страницу задания</a></p>
 
     <?php if ($errors !== []): ?>
         <section>
@@ -54,6 +69,7 @@ http_response_code(200);
             <p>Зарплата: <?= escape_html(number_format($salary, 2, '.', ' ')) ?></p>
         </section>
     <?php endif; ?>
+    </article>
 </main>
 </body>
 </html>
