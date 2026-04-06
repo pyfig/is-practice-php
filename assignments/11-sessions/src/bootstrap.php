@@ -1,9 +1,21 @@
 <?php
 declare(strict_types=1);
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+const ASSIGNMENT11_STATE_COOKIE = 'assignment11_state';
+const ASSIGNMENT11_DEFAULT_BASE_PATH = '/11-sessions';
+const ASSIGNMENT11_STATE_MAX_AGE = 2592000;
+
+$GLOBALS['assignment11_state'] = assignment11_load_state();
+$GLOBALS['assignment11_state_dirty'] = false;
+
+register_shutdown_function(static function (): void {
+    if (($GLOBALS['assignment11_state_dirty'] ?? false) !== true) {
+        return;
+    }
+
+    assignment11_write_state_cookie($GLOBALS['assignment11_state'] ?? []);
+    $GLOBALS['assignment11_state_dirty'] = false;
+});
 
 function escape_html(string $value): string
 {
@@ -12,7 +24,56 @@ function escape_html(string $value): string
 
 function app_path(string $path): string
 {
-    return $path;
+    return app_url($path);
+}
+
+function app_base_path(): string
+{
+    $basePath = $_SERVER['APP_BASE_PATH'] ?? ASSIGNMENT11_DEFAULT_BASE_PATH;
+
+    if (!is_string($basePath) || $basePath === '') {
+        return ASSIGNMENT11_DEFAULT_BASE_PATH;
+    }
+
+    $normalizedBasePath = '/' . trim($basePath, '/');
+
+    return $normalizedBasePath === '/' ? ASSIGNMENT11_DEFAULT_BASE_PATH : $normalizedBasePath;
+}
+
+function app_request_path(): string
+{
+    $requestPath = $_SERVER['APP_REQUEST_PATH'] ?? null;
+    if (is_string($requestPath) && $requestPath !== '') {
+        return $requestPath;
+    }
+
+    $uriPath = parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
+    $uriPath = is_string($uriPath) && $uriPath !== '' ? $uriPath : '/';
+    $basePath = app_base_path();
+
+    if ($uriPath === $basePath) {
+        return '/';
+    }
+
+    if (strpos($uriPath, $basePath . '/') === 0) {
+        return substr($uriPath, strlen($basePath)) ?: '/';
+    }
+
+    return $uriPath;
+}
+
+function app_url(string $path = ''): string
+{
+    $basePath = app_base_path();
+    if ($path === '') {
+        return $basePath;
+    }
+
+    if ($path === '/') {
+        return $basePath;
+    }
+
+    return $basePath . '/' . ltrim($path, '/');
 }
 
 function get_post_string(string $key): string
@@ -25,27 +86,142 @@ function get_post_string(string $key): string
 function render_page(string $title, string $body): void
 {
     http_response_code(200);
-    echo '<!doctype html><html lang="ru"><head><meta charset="UTF-8"><title>'
+    echo '<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'
         . escape_html($title)
-        . '</title><style>body{font-family:Arial,sans-serif;background:#f8fafc;color:#0f172a;margin:0;}main{max-width:900px;margin:0 auto;padding:24px;}section{background:#fff;border:1px solid #cbd5e1;padding:16px;margin-bottom:16px;}form{display:grid;gap:10px;}label{display:grid;gap:4px;}input,button{font:inherit;padding:8px;}a{color:#2563eb;}nav ul{padding-left:20px;}</style></head><body><main>'
+        . '</title><link rel="stylesheet" href="/assets/launchpad.css"><style>body{font-family:Arial,sans-serif;background:var(--color-page,#f8fafc);color:var(--color-text,#0f172a);margin:0;}.assignment-page{max-width:72rem;margin:0 auto;padding:var(--spacing-xl,24px);}.assignment-shell{background:var(--color-surface,#fff);border:1px solid var(--color-border,#cbd5e1);border-radius:var(--radius-md,16px);padding:var(--spacing-xl,24px);box-shadow:var(--shadow-sm,0 1px 2px rgba(15,23,42,.06));}section{background:var(--color-surface-subtle,#fff);border:1px solid var(--color-border,#cbd5e1);border-radius:12px;padding:16px;margin-bottom:16px;}section:last-child{margin-bottom:0;}form{display:grid;gap:10px;}label{display:grid;gap:4px;}input,button{font:inherit;padding:8px;}a{color:#2563eb;}nav ul{padding-left:20px;}code{font-family:var(--font-mono,monospace);}</style></head><body data-app-base-path="'
+        . escape_html(app_base_path())
+        . '" data-app-request-path="'
+        . escape_html(app_request_path())
+        . '"><header class="launchpad-header"><a class="home-logo" data-home-logo href="/"><img class="home-logo-icon" src="/assets/logo.svg" alt=""><span>Launchpad</span></a></header><main class="assignment-page"><article class="assignment-shell">'
         . $body
-        . '</main></body></html>';
+        . '</article></main></body></html>';
 }
 
 function session_namespace(string $key): array
 {
-    $value = $_SESSION[$key] ?? [];
+    $state = assignment11_state();
+    $value = $state[$key] ?? [];
 
     return is_array($value) ? $value : [];
 }
 
 function store_session_namespace(string $key, array $value): void
 {
-    $_SESSION[$key] = $value;
+    $state = assignment11_state();
+    $state[$key] = $value;
+    $GLOBALS['assignment11_state'] = $state;
+    $GLOBALS['assignment11_state_dirty'] = true;
+}
+
+function assignment11_state(): array
+{
+    $state = $GLOBALS['assignment11_state'] ?? [];
+
+    return is_array($state) ? $state : [];
+}
+
+function read_state_cookie(): array
+{
+    return assignment11_state();
+}
+
+function write_state_cookie(array $state): void
+{
+    $GLOBALS['assignment11_state'] = $state;
+    $GLOBALS['assignment11_state_dirty'] = false;
+    assignment11_write_state_cookie($state);
+}
+
+function clear_state_cookie(): void
+{
+    $GLOBALS['assignment11_state'] = [];
+    $GLOBALS['assignment11_state_dirty'] = false;
+
+    setcookie(ASSIGNMENT11_STATE_COOKIE, '', [
+        'expires' => time() - 3600,
+        'path' => app_base_path(),
+        'secure' => assignment11_is_https_request(),
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+    unset($_COOKIE[ASSIGNMENT11_STATE_COOKIE]);
 }
 
 function redirect_to(string $path): void
 {
-    header('Location: ' . app_path($path), true, 303);
+    header('Location: ' . app_url($path), true, 303);
     exit;
+}
+
+function assignment11_load_state(): array
+{
+    $cookieValue = $_COOKIE[ASSIGNMENT11_STATE_COOKIE] ?? null;
+    if (!is_string($cookieValue) || $cookieValue === '') {
+        return [];
+    }
+
+    $cookiePayload = json_decode($cookieValue, true);
+    if (!is_array($cookiePayload)) {
+        return [];
+    }
+
+    $payload = $cookiePayload['payload'] ?? null;
+    $signature = $cookiePayload['signature'] ?? null;
+    if (!is_string($payload) || $payload === '' || !is_string($signature) || $signature === '') {
+        return [];
+    }
+
+    $expectedSignature = hash_hmac('sha256', $payload, assignment11_state_secret());
+    if (!hash_equals($expectedSignature, $signature)) {
+        return [];
+    }
+
+    $state = json_decode($payload, true);
+
+    return is_array($state) ? $state : [];
+}
+
+function assignment11_write_state_cookie(array $state): void
+{
+    $payload = json_encode($state, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if ($payload === false) {
+        return;
+    }
+
+    $cookieValue = json_encode([
+        'payload' => $payload,
+        'signature' => hash_hmac('sha256', $payload, assignment11_state_secret()),
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    if ($cookieValue === false) {
+        return;
+    }
+
+    setcookie(ASSIGNMENT11_STATE_COOKIE, $cookieValue, [
+        'expires' => time() + ASSIGNMENT11_STATE_MAX_AGE,
+        'path' => app_base_path(),
+        'secure' => assignment11_is_https_request(),
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+
+    $_COOKIE[ASSIGNMENT11_STATE_COOKIE] = $cookieValue;
+}
+
+function assignment11_state_secret(): string
+{
+    $secret = getenv('ASSIGNMENT11_STATE_SECRET');
+    if (is_string($secret) && $secret !== '') {
+        return $secret;
+    }
+
+    return 'assignment11-local-dev-secret';
+}
+
+function assignment11_is_https_request(): bool
+{
+    $https = $_SERVER['HTTPS'] ?? '';
+
+    return is_string($https) && $https !== '' && $https !== 'off';
 }

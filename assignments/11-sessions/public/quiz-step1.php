@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $body = '<h1>Мини-квиз</h1>'
-    . '<p><a href="/">На главную</a></p>'
+    . '<p><a href="' . escape_html(app_url()) . '">На главную</a></p>'
     . '<section><h2>Шаг 1</h2><form method="post"><label>Какой язык выполняется на сервере в этом задании?<input type="text" name="answer_1" placeholder="PHP"></label><button type="submit">Дальше</button></form></section>';
 
 render_page('11 Sessions — quiz step 1', $body);

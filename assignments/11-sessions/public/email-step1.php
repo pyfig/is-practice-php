@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $body = '<h1>Передача email между страницами</h1>'
-    . '<p><a href="/">На главную</a></p>'
+    . '<p><a href="' . escape_html(app_url()) . '">На главную</a></p>'
     . '<section><h2>Шаг 1</h2><form method="post"><label>Email <input type="email" name="email" placeholder="student@example.com"></label><button type="submit">Сохранить email</button></form></section>';
 
 render_page('11 Sessions — email step 1', $body);

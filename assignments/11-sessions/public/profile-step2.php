@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $body = '<h1>Предзаполненная форма</h1>'
-    . '<p><a href="/profile-step1.php">Назад на шаг 1</a></p>'
+    . '<p><a href="' . escape_html(app_url('/profile-step1.php')) . '">Назад на шаг 1</a></p>'
     . '<section><h2>Шаг 2</h2><form method="post"><label>Имя <input type="text" name="name" placeholder="Иван"></label><label>Возраст <input type="text" name="age" value="' . escape_html($age) . '"></label><label>Город <input type="text" name="city" value="' . escape_html($city) . '"></label><button type="submit">Отправить форму</button></form></section>'
     . $submittedResult;
 

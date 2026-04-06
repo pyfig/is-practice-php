@@ -393,7 +393,7 @@ Wave 2: mounted-route/stateful refactors + deployment automation (`6,7,8,9,10`)
 
   **Commit**: YES | Message: `fix(http): mount assignment 10 router under slug path` | Files: [`assignments/10-http-basics/public/index.php`]
 
-- [ ] 8. Replace `11-sessions` native sessions with a signed JSON cookie scoped to `/11-sessions`
+- [x] 8. Replace `11-sessions` native sessions with a signed JSON cookie scoped to `/11-sessions`
 
   **What to do**: Remove Vercel-path dependence on `$_SESSION` from assignment `11`. Implement a local state layer that serializes the needed per-flow data into one signed JSON cookie named `assignment11_state`, path-scoped to `/11-sessions`, using HMAC signing with a deployment secret. Preserve current flows: country persistence, first-entry timer, email carry-over, refresh counter, city/age profile prefill, logout reset, and the multi-page quiz. Introduce local helpers for `app_url()`, `app_request_path()`, and cookie read/write/clear in `assignments/11-sessions/src/bootstrap.php`.
   **Must NOT do**: Do not keep `session_start()` on Vercel paths; do not use one cookie path of `/`; do not let one flow overwrite another flow’s namespace.

@@ -11,12 +11,12 @@ $score = 0;
 if (mb_strtolower($answer1, 'UTF-8') === 'php') {
     $score++;
 }
-if (in_array(mb_strtolower($answer2, 'UTF-8'), ['session', 'сессия', 'сессии'], true)) {
+if (in_array(mb_strtolower($answer2, 'UTF-8'), ['cookie', 'cookies', 'куки', 'кука', 'signed cookie', 'json cookie', 'session', 'сессия', 'сессии'], true)) {
     $score++;
 }
 
 $body = '<h1>Результат квиза</h1>'
-    . '<p><a href="/quiz-step1.php">Пройти ещё раз</a></p>'
+    . '<p><a href="' . escape_html(app_url('/quiz-step1.php')) . '">Пройти ещё раз</a></p>'
     . '<section><h2>Итог</h2><p>Ответ 1: <strong>' . escape_html($answer1) . '</strong></p><p>Ответ 2: <strong>' . escape_html($answer2) . '</strong></p><p>Количество правильных ответов: <strong>' . $score . ' из 2</strong></p></section>';
 
 render_page('11 Sessions — quiz result', $body);

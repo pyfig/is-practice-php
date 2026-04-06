@@ -1,0 +1,2 @@
+- 2026-04-06: Assignment `11-sessions` now falls back to a local dev secret only when `ASSIGNMENT11_STATE_SECRET` is absent, so local curl smoke tests still work while production keeps using the deployment secret.
+- 2026-04-06: The `assignment11_state` cookie is written with `path=/11-sessions`, `HttpOnly`, and `SameSite=Lax`; each flow continues to use its own namespace key inside the signed payload so country/email/profile/quiz data do not overwrite one another.
