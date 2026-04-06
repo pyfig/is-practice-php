@@ -235,7 +235,7 @@ Wave 2: mounted-route/stateful refactors + deployment automation (`6,7,8,9,10`)
 
   **Commit**: YES | Message: `feat(web): expose assignments 01-03 through vercel wrappers` | Files: [`assignments/01-php-basics/public/`, `assignments/02-control-structures/public/`, `assignments/03-arrays/public/`, `api/assignments.php`]
 
-- [ ] 4. Web-enable CLI assignments `04-07` with the same wrapper contract
+- [x] 4. Web-enable CLI assignments `04-07` with the same wrapper contract
 
   **What to do**: Apply the same assignment-local public wrapper pattern to `04-associative-arrays`, `05-multidimensional-arrays`, `06-user-functions`, and `07-standard-functions`. Ensure each page shows the assignment output inside the shared minimalist shell and is reachable from the launchpad with its short slug route.
   **Must NOT do**: Do not regress the existing CLI tests; do not create one generic “CLI assignment page” that bypasses assignment-local entrypoints.

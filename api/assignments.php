@@ -22,22 +22,22 @@ function vercel_assignment_manifest(): array
         '04-associative-arrays' => [
             'slug' => '04-associative-arrays',
             'strategy' => 'root_index',
-            'entry' => 'assignments/04-associative-arrays/index.php',
+            'entry' => 'assignments/04-associative-arrays/public/index.php',
         ],
         '05-multidimensional-arrays' => [
             'slug' => '05-multidimensional-arrays',
             'strategy' => 'root_index',
-            'entry' => 'assignments/05-multidimensional-arrays/index.php',
+            'entry' => 'assignments/05-multidimensional-arrays/public/index.php',
         ],
         '06-user-functions' => [
             'slug' => '06-user-functions',
             'strategy' => 'root_index',
-            'entry' => 'assignments/06-user-functions/index.php',
+            'entry' => 'assignments/06-user-functions/public/index.php',
         ],
         '07-standard-functions' => [
             'slug' => '07-standard-functions',
             'strategy' => 'root_index',
-            'entry' => 'assignments/07-standard-functions/index.php',
+            'entry' => 'assignments/07-standard-functions/public/index.php',
         ],
         '08-string-generation' => [
             'slug' => '08-string-generation',

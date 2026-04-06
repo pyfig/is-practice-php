@@ -3,3 +3,5 @@
 - 2026-04-06: Launchpad shell uses minimalist CSS with design tokens for colors, spacing, and typography. Cards use data attributes (data-launchpad-grid, data-assignment-card, data-assignment-slug, data-assignment-type, data-assignment-description) for stable test selectors.
 - 2026-04-06: Assignment types are: CLI (01-07), Web (08-10, 12), Stateful (11, 13). Badge colors use restrained palette: gray for CLI, green for Web, purple for Stateful.
 - 2026-04-06: CLI web wrappers for `01-03` should point the dispatcher at `public/index.php` so the wrapper can buffer the assignment-local `build_assignment_output()` result and render it inside the shared header shell.
+- 2026-04-06: CLI wrappers for `04-07` follow the same assignment-local `public/index.php` pattern; keeping each wrapper near the assignment avoids touching the deterministic CLI `index.php` sources and keeps tests unchanged.
+- 2026-04-06: Updating only `api/assignments.php` entries is enough to mount the new wrapper pages at the short slug routes.
