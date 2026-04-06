@@ -476,7 +476,7 @@ Wave 2: mounted-route/stateful refactors + deployment automation (`6,7,8,9,10`)
 
   **Commit**: YES | Message: `refactor(auth): make assignment 13 vercel-safe with db-backed auth cookie` | Files: [`assignments/13-auth-db-app/`, `database/13-auth-db-app/schema.sql`, `scripts/reset-auth-db.sh`, `scripts/run-db-smoke.sh`]
 
-- [ ] 10. Add Vercel smoke automation, deploy extraction tooling, and deployment runbook updates
+- [x] 10. Add Vercel smoke automation, deploy extraction tooling, and deployment runbook updates
 
   **What to do**: Add a root deployment smoke script `scripts/run-vercel-smoke.sh` that validates the launchpad, 13 card count, header/logo behavior, representative wrapper routes (`/01-php-basics`, `/07-standard-functions`), safe mounted pages (`/08-string-generation`, `/12-regex-validation`), mounted refactors (`/09-forms`, `/10-http-basics/status/404`, `/11-sessions`, `/13-auth-db-app`), and auth/state failure paths where environment is available. Add `scripts/extract_vercel_url.py` to parse the production URL from `vercel deploy --prod --yes` output, and update `README.md` plus `.env.vercel.local.example` with the exact local+production deploy workflow and required env vars/secrets.
   **Must NOT do**: Do not leave production verification dependent on manual URL copy/paste; do not add instructions that assume localhost DB on Vercel.
