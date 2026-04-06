@@ -1,0 +1,4 @@
+- 2026-04-06: The Vercel ingress now exposes `APP_SLUG`, `APP_BASE_PATH`, and `APP_REQUEST_PATH` through `$_SERVER`, `$_ENV`, and `putenv()` before including assignment-local entry files.
+- 2026-04-06: Mounted child-route handling is split by strategy: `root_index` for CLI roots, `index_only` for single-page web roots, `public_php_files` for direct child PHP entry files, and `front_controller` for router-style assignments such as `10-http-basics`.
+- 2026-04-06: Launchpad shell uses minimalist CSS with design tokens for colors, spacing, and typography. Cards use data attributes (data-launchpad-grid, data-assignment-card, data-assignment-slug, data-assignment-type, data-assignment-description) for stable test selectors.
+- 2026-04-06: Assignment types are: CLI (01-07), Web (08-10, 12), Stateful (11, 13). Badge colors use restrained palette: gray for CLI, green for Web, purple for Stateful.

@@ -1,0 +1,1 @@
+- 2026-04-06: PHP LSP diagnostics could not run because `intelephense` is not installed in the environment; verification used `php -l` plus router smoke checks instead.
