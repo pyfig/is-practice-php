@@ -178,9 +178,7 @@ http_response_code(200);
     </style>
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>">
-<header class="launchpad-header">
-    <a class="home-logo" data-home-logo href="<?= escape_html(app_url()) ?>">вернуться домой</a>
-</header>
+
 <main>
     <article class="assignment-shell">
     <h1>Практика по формам в PHP</h1>

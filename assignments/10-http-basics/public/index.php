@@ -122,7 +122,7 @@ function render_home_page(): string
 
     return '<!doctype html>'
         . '<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>10 HTTP Basics</title><link rel="stylesheet" href="/assets/launchpad.css"><style>main{max-width:960px;margin:0 auto;padding:24px}.assignment-shell{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:24px;box-shadow:var(--shadow-sm)}ul{display:grid;gap:8px}form{margin-top:16px}button{font:inherit;padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--color-border-strong);background:#0f172a;color:#ffffff;cursor:pointer}.assignment-meta{color:var(--color-text-muted);font-size:14px}</style></head><body data-app-base-path="' . escape_html($appBasePath) . '">' 
-        . '<header class="launchpad-header"><a class="home-logo" data-home-logo href="/">вернуться домой</a></header>'
+
         . '<main>'
         . '<article class="assignment-shell">'
         . '<h1>Практика по HTTP в PHP</h1>'

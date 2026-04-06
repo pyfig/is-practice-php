@@ -10,6 +10,12 @@ function assignment13_auth_secret(): string
         return $secret;
     }
 
+    // In production (Vercel), require explicit secret
+    $isProduction = getenv('VERCEL_ENV') === 'production' || getenv('VERCEL') === '1';
+    if ($isProduction) {
+        throw new RuntimeException('ASSIGNMENT13_AUTH_SECRET не настроен в production окружении.');
+    }
+
     return 'assignment13-local-dev-secret';
 }
 
@@ -101,34 +107,47 @@ function current_auth_user(): ?array
     $token = $_COOKIE[ASSIGNMENT13_AUTH_COOKIE] ?? null;
     if (!is_string($token) || $token === '') {
         $resolvedUser = null;
-
         return null;
     }
 
-    $statement = auth_db_connection()->prepare(
-        'SELECT users.id, users.full_name, users.email, users.created_at
-         FROM user_sessions
-         INNER JOIN users ON users.id = user_sessions.user_id
-         WHERE user_sessions.token_hash = :token_hash
-           AND user_sessions.expires_at > UTC_TIMESTAMP()
-         LIMIT 1'
-    );
-    $statement->execute(['token_hash' => assignment13_hash_token($token)]);
-    $user = $statement->fetch();
-
-    if (!is_array($user)) {
+    // Check DB availability before attempting connection
+    $dbStatus = auth_db_status();
+    if ($dbStatus['available'] === false) {
+        // Clear stale cookie when DB is unavailable
         clear_auth_cookie();
         $resolvedUser = null;
-
         return null;
     }
 
-    $touch = auth_db_connection()->prepare('UPDATE user_sessions SET last_seen_at = UTC_TIMESTAMP() WHERE token_hash = :token_hash');
-    $touch->execute(['token_hash' => assignment13_hash_token($token)]);
+    try {
+        $statement = auth_db_connection()->prepare(
+            'SELECT users.id, users.full_name, users.email, users.created_at
+             FROM user_sessions
+             INNER JOIN users ON users.id = user_sessions.user_id
+             WHERE user_sessions.token_hash = :token_hash
+               AND user_sessions.expires_at > UTC_TIMESTAMP()
+             LIMIT 1'
+        );
+        $statement->execute(['token_hash' => assignment13_hash_token($token)]);
+        $user = $statement->fetch();
 
-    $resolvedUser = $user;
+        if (!is_array($user)) {
+            clear_auth_cookie();
+            $resolvedUser = null;
+            return null;
+        }
 
-    return $resolvedUser;
+        $touch = auth_db_connection()->prepare('UPDATE user_sessions SET last_seen_at = UTC_TIMESTAMP() WHERE token_hash = :token_hash');
+        $touch->execute(['token_hash' => assignment13_hash_token($token)]);
+
+        $resolvedUser = $user;
+        return $resolvedUser;
+    } catch (Throwable $e) {
+        // On any error (stale session, deleted user, etc.), clear cookie safely
+        clear_auth_cookie();
+        $resolvedUser = null;
+        return null;
+    }
 }
 
 function create_user_session(array $user): void
@@ -157,10 +176,20 @@ function login_user(string $email, string $password): array
 function logout_current_user(): void
 {
     $token = $_COOKIE[ASSIGNMENT13_AUTH_COOKIE] ?? null;
-    if (is_string($token) && $token !== '') {
-        $statement = auth_db_connection()->prepare('DELETE FROM user_sessions WHERE token_hash = :token_hash');
-        $statement->execute(['token_hash' => assignment13_hash_token($token)]);
-    }
-
+    
+    // Always clear the cookie, even if DB is unavailable
     clear_auth_cookie();
+    
+    // Only delete session from DB if DB is available
+    if (is_string($token) && $token !== '') {
+        $dbStatus = auth_db_status();
+        if ($dbStatus['available'] === true) {
+            try {
+                $statement = auth_db_connection()->prepare('DELETE FROM user_sessions WHERE token_hash = :token_hash');
+                $statement->execute(['token_hash' => assignment13_hash_token($token)]);
+            } catch (Throwable $e) {
+                // Ignore DB errors during logout - cookie is already cleared
+            }
+        }
+    }
 }

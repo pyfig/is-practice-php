@@ -62,9 +62,7 @@ header('Content-Type: text/html; charset=UTF-8');
     </style>
 </head>
 <body>
-<header class="launchpad-header">
-    <a class="home-logo" data-home-logo href="/">вернуться домой</a>
-</header>
+
 <main class="assignment-page">
     <article class="assignment-shell">
         <h1 class="assignment-title">06 User Functions</h1>

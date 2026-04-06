@@ -1,19 +1,19 @@
 Retrieving project…
 Deploying pyfigs-projects/ilya_sheklakov_php_mysql
-Uploading [--------------------] (0.0B/73.9KB)
-Uploading [======--------------] (23.3KB/73.9KB)
-Uploading [===========---------] (40.7KB/73.9KB)
-Uploading [===============-----] (57.3KB/73.9KB)
-Uploading [====================] (73.9KB/73.9KB)
-Inspect: https://vercel.com/pyfigs-projects/ilya_sheklakov_php_mysql/8vzKd2ytGxHGDSY2kvJwcxKDecuq [5s]
-Production: https://ilyasheklakovphpmysql-fde5dcwvr-pyfigs-projects.vercel.app [5s]
-https://ilyasheklakovphpmysql-fde5dcwvr-pyfigs-projects.vercel.appBuilding...
-Building...
+Uploading [--------------------] (0.0B/68.5KB)
+Uploading [=========-----------] (32.0KB/68.5KB)
+Uploading [===========---------] (39.8KB/68.5KB)
+Uploading [================----] (55.8KB/68.5KB)
+Uploading [====================] (68.5KB/68.5KB)
+Inspect: https://vercel.com/pyfigs-projects/ilya_sheklakov_php_mysql/Er4whtwTzBr5fTrFPuMTAiwH4wqU [3s]
+Production: https://ilyasheklakovphpmysql-q89ksrpm5-pyfigs-projects.vercel.app [3s]
+https://ilyasheklakovphpmysql-q89ksrpm5-pyfigs-projects.vercel.appBuilding...
 Building: Running build in Washington, D.C., USA (East) – iad1
 Building: Build machine configuration: 2 cores, 8 GB
 Building: Retrieving list of deployment files...
-Building: Downloading 108 deployment files...
-Building: Restored build cache from previous deployment (WdrZ4exr6AsqAR3RkbJ2dnNq3xim)
+Building: Downloading 109 deployment files...
+Building: Downloading 109 deployment files...
+Building: Restored build cache from previous deployment (64DdbDpyJM3jJdSyfn71WHvQzTRe)
 Building: Running "vercel build"
 Building: Vercel CLI 50.38.2
 Building: 🐘 Downloading user files
@@ -22,11 +22,11 @@ Building: 🐘 Creating lambda
 Building: 🐘 Downloading user files
 Building: 🐘 Downloading PHP runtime files
 Building: 🐘 Creating lambda
-Building: Build Completed in /vercel/output [101ms]
+Building: Build Completed in /vercel/output [116ms]
 Building: Deploying outputs...
 Building: Deployment completed
 Building: Creating build cache...
-[2K[1A[2K[GProduction: https://ilyasheklakovphpmysql-fde5dcwvr-pyfigs-projects.vercel.app [27s]
+[2K[1A[2K[GProduction: https://ilyasheklakovphpmysql-q89ksrpm5-pyfigs-projects.vercel.app [25s]
 Completing...
-Aliased: https://ilyasheklakovphpmysql.vercel.app [27s]
+Aliased: https://ilyasheklakovphpmysql.vercel.app [25s]
 > Tip: Run `npx plugins add vercel/vercel-plugin` to enhance your agent experience

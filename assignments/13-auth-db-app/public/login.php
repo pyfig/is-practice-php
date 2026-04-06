@@ -4,10 +4,15 @@ declare(strict_types=1);
 require dirname(__DIR__) . '/src/bootstrap.php';
 require_once dirname(__DIR__) . '/src/auth.php';
 
+// Check DB availability first
+$dbStatus = auth_db_status();
+$dbAvailable = $dbStatus['available'];
+
 $email = '';
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Only process POST if DB is available
+if ($dbAvailable && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim((string) ($_POST['email'] ?? ''));
     $password = trim((string) ($_POST['password'] ?? ''));
 
@@ -31,6 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $content = '<h1>Вход</h1>';
+
+// Show DB unavailable notice if applicable
+if ($dbAvailable === false) {
+    if ($dbStatus['reason'] === 'config_missing') {
+        $content .= '<section class="flash-error"><h2>Конфигурация БД не завершена</h2><p>'
+            . escape_html($dbStatus['message'])
+            . '</p></section>';
+    } else {
+        $content .= '<section class="flash-error"><h2>База данных временно недоступна</h2><p>'
+            . escape_html($dbStatus['message'])
+            . '</p></section>';
+    }
+}
+
 if ($errors !== []) {
     $content .= '<section class="flash-error"><ul>';
     foreach ($errors as $error) {
@@ -39,10 +58,11 @@ if ($errors !== []) {
     $content .= '</ul></section>';
 }
 
+$disabledAttr = $dbAvailable ? '' : ' disabled';
 $content .= '<form method="post" action="' . escape_html(app_url('/login.php')) . '">'
-    . '<label>Email<input type="email" name="email" value="' . escape_html($email) . '"></label>'
-    . '<label>Пароль<input type="password" name="password"></label>'
-    . '<button type="submit">Войти</button>'
+    . '<label>Email<input type="email" name="email" value="' . escape_html($email) . '"' . $disabledAttr . '></label>'
+    . '<label>Пароль<input type="password" name="password"' . $disabledAttr . '></label>'
+    . '<button type="submit"' . $disabledAttr . '>Войти</button>'
     . '</form>';
 
 render_layout('13 Auth DB App — login', $content);

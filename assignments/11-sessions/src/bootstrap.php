@@ -92,7 +92,7 @@ function render_page(string $title, string $body): void
         . escape_html(app_base_path())
         . '" data-app-request-path="'
         . escape_html(app_request_path())
-        . '"><header class="launchpad-header"><a class="home-logo" data-home-logo href="/">вернуться домой</a></header><main class="assignment-page"><article class="assignment-shell">'
+        . '"><main class="assignment-page"><article class="assignment-shell">'
         . $body
         . '</article></main></body></html>';
 }

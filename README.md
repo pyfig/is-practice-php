@@ -66,16 +66,32 @@ This project is configured for deployment on Vercel using the `vercel-php` runti
    ASSIGNMENT13_AUTH_SECRET=your-random-secret-here
    ```
 
-3. For production, add these as Vercel secrets:
+3. For production, add runtime environment variables:
    ```bash
-   vercel secrets add auth_db_host "your-db-host"
-   vercel secrets add auth_db_port "3306"
-   vercel secrets add auth_db_user "your-db-user"
-   vercel secrets add auth_db_password "your-db-password"
-   vercel secrets add auth_db_name "your-db-name"
-   vercel secrets add assignment11_state_secret "your-random-secret"
-   vercel secrets add assignment13_auth_secret "your-random-secret"
+   # Add database connection variables (use your cloud MySQL provider details)
+   vercel env add AUTH_DB_HOST production
+   # Enter your database host (e.g., your-db-host.provider.com)
+   
+   vercel env add AUTH_DB_PORT production  
+   # Enter: 3306
+   
+   vercel env add AUTH_DB_USER production
+   # Enter your database username
+   
+   vercel env add AUTH_DB_PASSWORD production
+   # Enter your database password (will be encrypted)
+   
+   vercel env add AUTH_DB_NAME production
+   # Enter your database name
+   
+   vercel env add ASSIGNMENT11_STATE_SECRET production
+   # Enter a long random string for session signing
+   
+   vercel env add ASSIGNMENT13_AUTH_SECRET production
+   # Enter a long random string for auth token signing
    ```
+   
+   Note: These are runtime environment variables, not Vercel secrets. PHP reads them via `getenv()`.
 
 ### Local Development
 

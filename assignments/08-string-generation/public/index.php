@@ -155,9 +155,7 @@ http_response_code(200);
     </style>
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>" data-app-request-path="<?= escape_html($appRequestPath) ?>">
-<header class="launchpad-header">
-    <a class="home-logo" data-home-logo href="/">вернуться домой</a>
-</header>
+
 <main class="assignment-page">
     <article class="assignment-shell">
         <h1 class="assignment-title">Формирование HTML-строк с помощью PHP</h1>
