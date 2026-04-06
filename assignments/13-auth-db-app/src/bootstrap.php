@@ -144,7 +144,7 @@ function render_layout(string $title, string $content): void
         </style>
     </head>
     <body data-app-base-path="<?= escape_html(app_base_path()) ?>" data-app-request-path="<?= escape_html(app_request_path()) ?>">
-    <header class="launchpad-header"><a class="home-logo" data-home-logo href="/"><img class="home-logo-icon" src="/assets/logo.svg" alt=""><span>Launchpad</span></a></header>
+    <header class="launchpad-header"><a class="home-logo" data-home-logo href="/">вернуться домой</a></header>
     <main class="assignment-page">
         <article class="assignment-shell">
             <nav>

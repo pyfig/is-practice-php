@@ -179,10 +179,7 @@ http_response_code(200);
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>">
 <header class="launchpad-header">
-    <a class="home-logo" data-home-logo href="<?= escape_html(app_url()) ?>">
-        <img class="home-logo-icon" src="/assets/logo.svg" alt="">
-        <span>Launchpad</span>
-    </a>
+    <a class="home-logo" data-home-logo href="<?= escape_html(app_url()) ?>">вернуться домой</a>
 </header>
 <main>
     <article class="assignment-shell">

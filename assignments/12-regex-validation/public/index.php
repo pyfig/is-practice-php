@@ -121,10 +121,7 @@ http_response_code(200);
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>" data-app-request-path="<?= escape_html($appRequestPath) ?>">
 <header class="launchpad-header">
-    <a class="home-logo" data-home-logo href="/">
-        <img class="home-logo-icon" src="/assets/logo.svg" alt="">
-        <span>Launchpad</span>
-    </a>
+    <a class="home-logo" data-home-logo href="/">вернуться домой</a>
 </header>
 <main class="assignment-page">
     <article class="assignment-shell">

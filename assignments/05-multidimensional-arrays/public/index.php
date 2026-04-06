@@ -63,10 +63,7 @@ header('Content-Type: text/html; charset=UTF-8');
 </head>
 <body>
 <header class="launchpad-header">
-    <a class="home-logo" data-home-logo href="/">
-        <img class="home-logo-icon" src="/assets/logo.svg" alt="">
-        <span>Launchpad</span>
-    </a>
+    <a class="home-logo" data-home-logo href="/">вернуться домой</a>
 </header>
 <main class="assignment-page">
     <article class="assignment-shell">
