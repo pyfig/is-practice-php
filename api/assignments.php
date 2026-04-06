@@ -7,17 +7,17 @@ function vercel_assignment_manifest(): array
         '01-php-basics' => [
             'slug' => '01-php-basics',
             'strategy' => 'root_index',
-            'entry' => 'assignments/01-php-basics/index.php',
+            'entry' => 'assignments/01-php-basics/public/index.php',
         ],
         '02-control-structures' => [
             'slug' => '02-control-structures',
             'strategy' => 'root_index',
-            'entry' => 'assignments/02-control-structures/index.php',
+            'entry' => 'assignments/02-control-structures/public/index.php',
         ],
         '03-arrays' => [
             'slug' => '03-arrays',
             'strategy' => 'root_index',
-            'entry' => 'assignments/03-arrays/index.php',
+            'entry' => 'assignments/03-arrays/public/index.php',
         ],
         '04-associative-arrays' => [
             'slug' => '04-associative-arrays',

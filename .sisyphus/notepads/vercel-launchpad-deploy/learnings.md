@@ -2,3 +2,4 @@
 - 2026-04-06: Mounted child-route handling is split by strategy: `root_index` for CLI roots, `index_only` for single-page web roots, `public_php_files` for direct child PHP entry files, and `front_controller` for router-style assignments such as `10-http-basics`.
 - 2026-04-06: Launchpad shell uses minimalist CSS with design tokens for colors, spacing, and typography. Cards use data attributes (data-launchpad-grid, data-assignment-card, data-assignment-slug, data-assignment-type, data-assignment-description) for stable test selectors.
 - 2026-04-06: Assignment types are: CLI (01-07), Web (08-10, 12), Stateful (11, 13). Badge colors use restrained palette: gray for CLI, green for Web, purple for Stateful.
+- 2026-04-06: CLI web wrappers for `01-03` should point the dispatcher at `public/index.php` so the wrapper can buffer the assignment-local `build_assignment_output()` result and render it inside the shared header shell.

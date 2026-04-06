@@ -195,7 +195,7 @@ Wave 2: mounted-route/stateful refactors + deployment automation (`6,7,8,9,10`)
 
   **Commit**: YES | Message: `feat(ui): add minimalist launchpad shell and assets` | Files: [`public/assets/`, `api/index.php`, `api/assignments.php`]
 
-- [ ] 3. Web-enable CLI assignments `01-03` with isolated public wrappers
+- [x] 3. Web-enable CLI assignments `01-03` with isolated public wrappers
 
   **What to do**: Add `public/index.php` to `assignments/01-php-basics`, `02-control-structures`, and `03-arrays`. Each wrapper must capture the current deterministic CLI output from the existing assignment-local `index.php`, preserve UTF-8 content, render it inside a minimalist assignment page with the shared header/logo contract, and expose the page through `/01-php-basics`, `/02-control-structures`, and `/03-arrays`.
   **Must NOT do**: Do not rewrite the underlying assignment logic into a new shared service; do not remove the existing CLI entrypoints or tests.
