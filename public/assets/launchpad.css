@@ -1,88 +1,26 @@
-/* Launchpad Modern Minimalist Styles */
-
-/* Design Tokens - Light & Dark Mode */
+/* Launchpad Minimalist Styles */
+/* Design tokens */
 :root {
-  /* Colors */
-  --color-bg: #f8fafc;
-  --color-bg-elevated: #ffffff;
+  --color-bg: #fafafa;
   --color-surface: #ffffff;
-  --color-border: #e2e8f0;
-  --color-border-hover: #cbd5e1;
-  --color-text: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-muted: #64748b;
-  --color-accent: #3b82f6;
-  --color-accent-hover: #2563eb;
-  --color-accent-light: #eff6ff;
-  
-  /* Badge colors */
-  --color-badge-cli: #6366f1;
-  --color-badge-cli-bg: #eef2ff;
-  --color-badge-web: #10b981;
-  --color-badge-web-bg: #ecfdf5;
-  --color-badge-stateful: #f59e0b;
-  --color-badge-stateful-bg: #fffbeb;
-  
-  /* Spacing */
+  --color-border: #e5e5e5;
+  --color-text: #1a1a1a;
+  --color-text-muted: #737373;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-badge-cli: #6b7280;
+  --color-badge-web: #059669;
+  --color-badge-stateful: #7c3aed;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
-  --spacing-2xl: 3rem;
-  --spacing-3xl: 4rem;
-  
-  /* Radius */
-  --radius-sm: 0.375rem;
+  --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  
-  /* Typography */
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
-  
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-base: 200ms ease;
-  --transition-slow: 300ms ease;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #0f172a;
-    --color-bg-elevated: #1e293b;
-    --color-surface: #1e293b;
-    --color-border: #334155;
-    --color-border-hover: #475569;
-    --color-text: #f8fafc;
-    --color-text-secondary: #cbd5e1;
-    --color-text-muted: #94a3b8;
-    --color-accent: #60a5fa;
-    --color-accent-hover: #3b82f6;
-    --color-accent-light: #1e3a5f;
-    
-    --color-badge-cli: #818cf8;
-    --color-badge-cli-bg: #1e1b4b;
-    --color-badge-web: #34d399;
-    --color-badge-web-bg: #064e3b;
-    --color-badge-stateful: #fbbf24;
-    --color-badge-stateful-bg: #451a03;
-    
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
-    --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
-  }
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
 }
 
 /* Reset and base */
@@ -94,131 +32,69 @@
 
 html {
   font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
 body {
   font-family: var(--font-sans);
-  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-elevated) 100%);
-  background-attachment: fixed;
+  background-color: var(--color-bg);
   color: var(--color-text);
   min-height: 100vh;
 }
 
-/* Header */
+/* Header with logo */
 .launchpad-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
   padding: var(--spacing-lg) var(--spacing-xl);
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
-}
-
-@media (prefers-color-scheme: dark) {
-  .launchpad-header {
-    background: rgba(15, 23, 42, 0.8);
-  }
+  background-color: var(--color-surface);
 }
 
 .home-logo {
   display: inline-flex;
   align-items: center;
+  gap: var(--spacing-sm);
   text-decoration: none;
   color: var(--color-text);
-  font-weight: 700;
-  font-size: 1.25rem;
-  letter-spacing: -0.025em;
-  transition: color var(--transition-fast);
-  position: relative;
-}
-
-.home-logo::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--color-accent);
-  transition: width var(--transition-base);
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: color 0.15s ease;
 }
 
 .home-logo:hover {
   color: var(--color-accent);
 }
 
-.home-logo:hover::after {
-  width: 100%;
+.home-logo:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.home-logo-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
 }
 
 /* Main content */
-.launchpad-container {
-  max-width: 80rem;
+.launchpad-main {
+  max-width: 72rem;
   margin: 0 auto;
-  padding: var(--spacing-3xl) var(--spacing-xl);
+  padding: var(--spacing-xl);
 }
 
-/* Hero section */
-.launchpad-hero {
-  text-align: center;
-  margin-bottom: var(--spacing-3xl);
-  padding: var(--spacing-2xl) 0;
-}
-
-.launchpad-hero-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  margin-bottom: var(--spacing-md);
-  background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.launchpad-hero-subtitle {
-  font-size: 1.125rem;
-  color: var(--color-text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
-
-/* Stats row */
-.launchpad-stats {
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-xl);
-  margin-top: var(--spacing-xl);
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-value {
+.launchpad-title {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-accent);
-}
-
-.stat-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text);
 }
 
 /* Responsive grid */
 .launchpad-grid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
 @media (min-width: 640px) {
@@ -233,12 +109,6 @@ body {
   }
 }
 
-@media (min-width: 1280px) {
-  .launchpad-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 /* Assignment card */
 .assignment-card {
   display: flex;
@@ -246,48 +116,20 @@ body {
   padding: var(--spacing-lg);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--color-text);
-  transition: all var(--transition-base);
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-}
-
-.assignment-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  transform: scaleX(0);
-  transition: transform var(--transition-base);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .assignment-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: var(--color-border-hover);
-}
-
-.assignment-card:hover::before {
-  transform: scaleX(1);
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-sm);
 }
 
 .assignment-card:focus {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-}
-
-.card-number {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-accent);
-  margin-bottom: var(--spacing-xs);
 }
 
 .card-header {
@@ -299,90 +141,49 @@ body {
 }
 
 .card-title {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--color-text);
-  line-height: 1.3;
+  font-family: var(--font-mono);
 }
 
 .card-badge {
   display: inline-flex;
   align-items: center;
   padding: var(--spacing-xs) var(--spacing-sm);
-  font-size: 0.625rem;
-  font-weight: 600;
+  font-size: 0.6875rem;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-radius: 9999px;
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
 }
 
 .card-badge--cli {
-  background-color: var(--color-badge-cli-bg);
+  background-color: #f3f4f6;
   color: var(--color-badge-cli);
 }
 
 .card-badge--web {
-  background-color: var(--color-badge-web-bg);
+  background-color: #ecfdf5;
   color: var(--color-badge-web);
 }
 
 .card-badge--stateful {
-  background-color: var(--color-badge-stateful-bg);
+  background-color: #f5f3ff;
   color: var(--color-badge-stateful);
 }
 
 .card-description {
   font-size: 0.875rem;
   color: var(--color-text-muted);
-  line-height: 1.5;
-  flex-grow: 1;
-}
-
-.card-arrow {
-  margin-top: var(--spacing-md);
-  font-size: 1.25rem;
-  color: var(--color-accent);
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all var(--transition-base);
-}
-
-.assignment-card:hover .card-arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Footer */
-.launchpad-footer {
-  text-align: center;
-  padding: var(--spacing-2xl) var(--spacing-xl);
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  border-top: 1px solid var(--color-border);
-  margin-top: var(--spacing-3xl);
+  line-height: 1.4;
 }
 
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   .home-logo,
-  .assignment-card,
-  .card-arrow {
+  .assignment-card {
     transition: none;
   }
-  
-  .assignment-card:hover {
-    transform: none;
-  }
-}
-
-/* Legacy class support */
-.launchpad-main {
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: var(--spacing-3xl) var(--spacing-xl);
-}
-
-.launchpad-title {
-  display: none;
 }
