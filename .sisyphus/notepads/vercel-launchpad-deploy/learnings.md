@@ -5,3 +5,5 @@
 - 2026-04-06: CLI web wrappers for `01-03` should point the dispatcher at `public/index.php` so the wrapper can buffer the assignment-local `build_assignment_output()` result and render it inside the shared header shell.
 - 2026-04-06: CLI wrappers for `04-07` follow the same assignment-local `public/index.php` pattern; keeping each wrapper near the assignment avoids touching the deterministic CLI `index.php` sources and keeps tests unchanged.
 - 2026-04-06: Updating only `api/assignments.php` entries is enough to mount the new wrapper pages at the short slug routes.
+- 2026-04-06: Safe single-page assignments can align with the launchpad shell by adding the shared header/logo, linking `/assets/launchpad.css`, and exposing `APP_BASE_PATH`/`APP_REQUEST_PATH` on the page without changing assignment logic.
+- 2026-04-06: For mounted single-endpoint forms like `12-regex-validation`, setting `action` to `APP_BASE_PATH` makes the mounted-route contract explicit while preserving the original POST validation flow.

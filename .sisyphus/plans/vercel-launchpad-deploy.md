@@ -275,7 +275,7 @@ Wave 2: mounted-route/stateful refactors + deployment automation (`6,7,8,9,10`)
 
   **Commit**: YES | Message: `feat(web): expose assignments 04-07 through vercel wrappers` | Files: [`assignments/04-associative-arrays/public/`, `assignments/05-multidimensional-arrays/public/`, `assignments/06-user-functions/public/`, `assignments/07-standard-functions/public/`, `api/assignments.php`]
 
-- [ ] 5. Adapt already-safe assignments `08` and `12` to the shared header and mounted-route contract
+- [x] 5. Adapt already-safe assignments `08` and `12` to the shared header and mounted-route contract
 
   **What to do**: Keep `08-string-generation` and `12-regex-validation` functionally intact, but add the shared header/logo markup and make their pages explicitly aware of the mounted route contract. They must work unchanged under `/08-string-generation` and `/12-regex-validation`, preserve current logic, and expose stable selectors for the home logo.
   **Must NOT do**: Do not redesign their assignment behavior; do not add unnecessary local routers.
