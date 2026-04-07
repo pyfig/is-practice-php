@@ -104,15 +104,23 @@ function dispatch_vercel_request(): void
 
     vercel_expose_assignment_context($assignment['slug'], $mountedRequestPath, $targetFile);
 
-    // Start output buffering to capture assignment output
-    ob_start();
+    // Skip home header for cookie-based session assignments to avoid header() conflicts
+    $skipHeaderSlugs = ['11-sessions', '13-auth-db-app'];
+    $shouldOutputHeader = !in_array($slug, $skipHeaderSlugs, true);
+    
+    if ($shouldOutputHeader) {
+        // Start output buffering to capture assignment output
+        ob_start();
+    }
+    
     require $targetFile;
-    $assignmentOutput = ob_get_clean();
     
-    // Output home navigation header before assignment content
-    vercel_output_home_header($slug);
-    
-    echo $assignmentOutput;
+    if ($shouldOutputHeader) {
+        $assignmentOutput = ob_get_clean();
+        // Output home navigation header before assignment content
+        vercel_output_home_header($slug);
+        echo $assignmentOutput;
+    }
     exit;
 }
 
