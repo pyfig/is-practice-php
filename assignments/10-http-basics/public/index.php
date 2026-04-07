@@ -147,11 +147,13 @@ $path = request_path();
 
 if ($path === '/') {
     send_html(200, render_home_page());
+    return;
 }
 
 if ($path === '/method') {
     $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
     send_text(200, 'Метод запроса: ' . $method);
+    return;
 }
 
 if ($path === '/headers') {
@@ -168,10 +170,12 @@ if ($path === '/headers') {
     }
 
     send_text(200, implode("\n", $lines));
+    return;
 }
 
 if ($path === '/redirect-target') {
     send_text(200, 'Вы перешли на целевую страницу после редиректа.');
+    return;
 }
 
 if (preg_match('#^/status/(200|302|400|404)$#', $path, $matches) === 1) {
@@ -179,6 +183,7 @@ if (preg_match('#^/status/(200|302|400|404)$#', $path, $matches) === 1) {
 
     if ($statusCode === 302) {
         send_text(302, 'Временный редирект на /redirect-target', ['Location' => app_url('redirect-target')]);
+        return;
     }
 
     $messages = [
@@ -188,6 +193,7 @@ if (preg_match('#^/status/(200|302|400|404)$#', $path, $matches) === 1) {
     ];
 
     send_text($statusCode, $messages[$statusCode]);
+    return;
 }
 
 send_text(404, 'Маршрут не найден. Используйте /status/404 для явной демонстрации 404.');
