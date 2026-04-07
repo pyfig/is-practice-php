@@ -1,19 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "bash build.sh",
   "functions": {
     "api/*.php": {
       "runtime": "vercel-php@0.9.0"
     }
   },
   "routes": [
-    {
-      "src": "/assets/(.*)",
-      "dest": "/public/assets/$1"
-    },
-    {
-      "src": "/([0-9]+-[^/]+)/assets/(.*)",
-      "dest": "/assignments/$1/public/assets/$2"
-    },
     {
       "src": "/(.*)",
       "dest": "/api/index.php"

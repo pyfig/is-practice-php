@@ -103,7 +103,7 @@ http_response_code(200);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>12 Regex Validation</title>
     <link rel="stylesheet" href="/assets/launchpad.css">
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="/assets/assignments/12-regex-validation/styles.css">
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>" data-app-request-path="<?= escape_html($appRequestPath) ?>">
 

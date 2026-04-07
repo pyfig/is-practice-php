@@ -33,7 +33,7 @@ http_response_code(200);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>09 Forms — result.php</title>
     <link rel="stylesheet" href="/assets/launchpad.css">
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="/assets/assignments/09-forms/styles.css">
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>">
 <header class="launchpad-header">

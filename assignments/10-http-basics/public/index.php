@@ -121,7 +121,7 @@ function render_home_page(): string
     $appBasePath = app_base_path();
 
     return '<!doctype html>'
-        . '<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>10 HTTP Basics</title><link rel="stylesheet" href="/assets/launchpad.css"><link rel="stylesheet" href="assets/styles.css"></head><body data-app-base-path="' . escape_html($appBasePath) . '">' 
+        . '<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>10 HTTP Basics</title><link rel="stylesheet" href="/assets/launchpad.css"><link rel="stylesheet" href="/assets/assignments/10-http-basics/styles.css"></head><body data-app-base-path="' . escape_html($appBasePath) . '">' 
 
         . '<main>'
         . '<article class="assignment-shell">'

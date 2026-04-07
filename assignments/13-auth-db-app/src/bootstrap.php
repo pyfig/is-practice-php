@@ -161,7 +161,7 @@ function render_layout(string $title, string $content): void
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?= escape_html($title) ?></title>
         <link rel="stylesheet" href="/assets/launchpad.css">
-        <link rel="stylesheet" href="assets/styles.css">
+        <link rel="stylesheet" href="/assets/assignments/13-auth-db-app/styles.css">
     </head>
     <body data-app-base-path="<?= escape_html(app_base_path()) ?>" data-app-request-path="<?= escape_html(app_request_path()) ?>">
 

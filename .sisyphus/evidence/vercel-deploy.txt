@@ -1,10 +1,15 @@
 Retrieving project…
 Deploying pyfigs-projects/ilya_sheklakov_php_mysql
-Inspect: https://vercel.com/pyfigs-projects/ilya_sheklakov_php_mysql/FRGs1KYZZ1hhupUK4wbWWRD2bV2t [2s]
-Production: https://ilyasheklakovphpmysql-7burnutfb-pyfigs-projects.vercel.app [2s]
-https://ilyasheklakovphpmysql-7burnutfb-pyfigs-projects.vercel.appBuilding...
+Uploading [--------------------] (0.0B/72.3KB)
+Uploading [=====---------------] (18.8KB/72.3KB)
+Uploading [==========----------] (39.1KB/72.3KB)
+Uploading [===============-----] (54.4KB/72.3KB)
+Uploading [====================] (72.3KB/72.3KB)
+Inspect: https://vercel.com/pyfigs-projects/ilya_sheklakov_php_mysql/74u81H8cGgUHjMbyog7aMmw3dcGz [4s]
+Production: https://ilyasheklakovphpmysql-pqwyvgwel-pyfigs-projects.vercel.app [4s]
+https://ilyasheklakovphpmysql-pqwyvgwel-pyfigs-projects.vercel.appBuilding...
 Building...
-[2K[1A[2K[GProduction: https://ilyasheklakovphpmysql-7burnutfb-pyfigs-projects.vercel.app [24s]
+[2K[1A[2K[GProduction: https://ilyasheklakovphpmysql-pqwyvgwel-pyfigs-projects.vercel.app [26s]
 Completing...
-Aliased: https://ilyasheklakovphpmysql.vercel.app [24s]
+Aliased: https://ilyasheklakovphpmysql.vercel.app [26s]
 > Tip: Run `npx plugins add vercel/vercel-plugin` to enhance your agent experience
