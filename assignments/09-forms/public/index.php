@@ -162,20 +162,7 @@ http_response_code(200);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>09 Forms</title>
     <link rel="stylesheet" href="/assets/launchpad.css">
-    <style>
-        main { max-width: 960px; margin: 0 auto; padding: 24px; }
-        .assignment-shell { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); }
-        section { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-        form { display: grid; gap: 10px; }
-        label { display: grid; gap: 4px; }
-        fieldset { border: 1px solid #cbd5e1; padding: 12px; }
-        input, textarea, select, button { font: inherit; padding: 8px; border-radius: var(--radius-sm); }
-        input, textarea, select { border: 1px solid #cbd5e1; }
-        button { width: fit-content; cursor: pointer; border: 1px solid var(--color-border-strong); background: #0f172a; color: #ffffff; }
-        .inline-options { display: flex; gap: 16px; flex-wrap: wrap; }
-        .assignment-description { color: var(--color-text-muted); }
-        .assignment-meta { color: var(--color-text-muted); font-size: 14px; }
-    </style>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>">
 

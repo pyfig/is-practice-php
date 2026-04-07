@@ -103,21 +103,7 @@ http_response_code(200);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>12 Regex Validation</title>
     <link rel="stylesheet" href="/assets/launchpad.css">
-    <style>
-        .assignment-page { max-width: 760px; margin: 0 auto; padding: var(--spacing-xl); }
-        .assignment-shell { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-xl); box-shadow: var(--shadow-sm); }
-        .assignment-title { margin: 0 0 var(--spacing-sm); font-size: 1.75rem; }
-        .assignment-description { margin: 0 0 var(--spacing-lg); color: var(--color-text-muted); }
-        form { display: grid; gap: 14px; }
-        label { display: grid; gap: 6px; }
-        input, button { font: inherit; padding: 10px 12px; border-radius: var(--radius-sm); }
-        input { border: 1px solid var(--color-border); }
-        button { border: 1px solid var(--color-border-strong); background: #0f172a; color: #fff; cursor: pointer; }
-        .success { padding: 12px; background: #dcfce7; border: 1px solid #22c55e; margin-bottom: 16px; border-radius: var(--radius-sm); }
-        .error { color: #b91c1c; font-size: 14px; }
-        .form-summary-error { margin-bottom: 16px; }
-        code { font-family: var(--font-mono); }
-    </style>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>" data-app-request-path="<?= escape_html($appRequestPath) ?>">
 

@@ -33,11 +33,7 @@ http_response_code(200);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>09 Forms — result.php</title>
     <link rel="stylesheet" href="/assets/launchpad.css">
-    <style>
-        .assignment-page { max-width: 760px; margin: 0 auto; padding: var(--spacing-xl); }
-        .assignment-shell { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-xl); box-shadow: var(--shadow-sm); }
-        .back-link { color: var(--color-text-muted); }
-    </style>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body data-app-base-path="<?= escape_html($appBasePath) ?>">
 <header class="launchpad-header">

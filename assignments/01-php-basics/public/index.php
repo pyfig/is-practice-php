@@ -22,44 +22,7 @@ header('Content-Type: text/html; charset=UTF-8');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>01 PHP Basics</title>
     <link rel="stylesheet" href="/assets/launchpad.css">
-    <style>
-        .assignment-page {
-            max-width: 72rem;
-            margin: 0 auto;
-            padding: var(--spacing-xl);
-        }
-
-        .assignment-shell {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-xl);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .assignment-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .assignment-description {
-            color: var(--color-text-muted);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .assignment-output {
-            white-space: pre-wrap;
-            font-family: var(--font-mono);
-            font-size: 0.95rem;
-            line-height: 1.7;
-            background: #f8fafc;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-lg);
-            overflow-x: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/assignment-common.css">
 </head>
 <body>
 

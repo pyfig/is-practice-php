@@ -1,27 +1,10 @@
 Retrieving project…
 Deploying pyfigs-projects/ilya_sheklakov_php_mysql
-Uploading [--------------------] (0.0B/5.2KB)
-Uploading [====================] (5.2KB/5.2KB)
-Inspect: https://vercel.com/pyfigs-projects/ilya_sheklakov_php_mysql/5EMdHWnLWz8en2PC5NJRJDaUhob2 [3s]
-Production: https://ilyasheklakovphpmysql-azk2qxa95-pyfigs-projects.vercel.app [3s]
-https://ilyasheklakovphpmysql-azk2qxa95-pyfigs-projects.vercel.appBuilding...
+Inspect: https://vercel.com/pyfigs-projects/ilya_sheklakov_php_mysql/FRGs1KYZZ1hhupUK4wbWWRD2bV2t [2s]
+Production: https://ilyasheklakovphpmysql-7burnutfb-pyfigs-projects.vercel.app [2s]
+https://ilyasheklakovphpmysql-7burnutfb-pyfigs-projects.vercel.appBuilding...
 Building...
-Building: Running build in Washington, D.C., USA (East) – iad1
-Building: Build machine configuration: 2 cores, 8 GB
-Building: Retrieving list of deployment files...
-Building: Downloading 111 deployment files...
-Building: Restored build cache from previous deployment (C7LdUKqvqcNfAy7fSnruDYTDuWzz)
-Building: Running "vercel build"
-Building: Vercel CLI 50.38.2
-Building: 🐘 Downloading user files
-Building: 🐘 Downloading PHP runtime files
-Building: 🐘 Creating lambda
-Building: 🐘 Downloading user files
-Building: 🐘 Downloading PHP runtime files
-Building: 🐘 Creating lambda
-Building: Build Completed in /vercel/output [107ms]
-Building: Deploying outputs...
-[2K[1A[2K[GProduction: https://ilyasheklakovphpmysql-azk2qxa95-pyfigs-projects.vercel.app [24s]
+[2K[1A[2K[GProduction: https://ilyasheklakovphpmysql-7burnutfb-pyfigs-projects.vercel.app [24s]
 Completing...
 Aliased: https://ilyasheklakovphpmysql.vercel.app [24s]
 > Tip: Run `npx plugins add vercel/vercel-plugin` to enhance your agent experience

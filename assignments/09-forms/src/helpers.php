@@ -73,7 +73,7 @@ function parse_positive_int(string $value): ?int
 function render_alert(string $title, string $message): string
 {
     return sprintf(
-        '<div style="padding:12px;border:1px solid #d1d5db;background:#f8fafc;margin-top:12px;"><strong>%s</strong><br>%s</div>',
+        '<div class="alert"><strong>%s</strong>%s</div>',
         escape_html($title),
         escape_html($message)
     );

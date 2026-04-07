@@ -88,7 +88,7 @@ function render_page(string $title, string $body): void
     http_response_code(200);
     echo '<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'
         . escape_html($title)
-        . '</title><link rel="stylesheet" href="/assets/launchpad.css"><style>body{font-family:Arial,sans-serif;background:var(--color-page,#f8fafc);color:var(--color-text,#0f172a);margin:0;}.assignment-page{max-width:72rem;margin:0 auto;padding:var(--spacing-xl,24px);}.assignment-shell{background:var(--color-surface,#fff);border:1px solid var(--color-border,#cbd5e1);border-radius:var(--radius-md,16px);padding:var(--spacing-xl,24px);box-shadow:var(--shadow-sm,0 1px 2px rgba(15,23,42,.06));}section{background:var(--color-surface-subtle,#fff);border:1px solid var(--color-border,#cbd5e1);border-radius:12px;padding:16px;margin-bottom:16px;}section:last-child{margin-bottom:0;}form{display:grid;gap:10px;}label{display:grid;gap:4px;}input,button{font:inherit;padding:8px;}a{color:#2563eb;}nav ul{padding-left:20px;}code{font-family:var(--font-mono,monospace);}</style></head><body data-app-base-path="'
+        . '</title><link rel="stylesheet" href="/assets/launchpad.css"><link rel="stylesheet" href="assets/styles.css"></head><body data-app-base-path="'
         . escape_html(app_base_path())
         . '" data-app-request-path="'
         . escape_html(app_request_path())
