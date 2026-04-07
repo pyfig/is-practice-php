@@ -1,0 +1,28 @@
+diff --git a/assignments/13-auth-db-app/public/index.php b/assignments/13-auth-db-app/public/index.php
+index bf23c25..af1bf6a 100644
+--- a/assignments/13-auth-db-app/public/index.php
++++ b/assignments/13-auth-db-app/public/index.php
+@@ -4,18 +4,14 @@ declare(strict_types=1);
+ require dirname(__DIR__) . '/src/bootstrap.php';
+ require_once dirname(__DIR__) . '/src/auth.php';
+ 
++$dbStatus = auth_db_ready_status();
+ $user = current_auth_user();
+-$resolved = auth_db_config();
+ 
+-$content = '<h1>Регистрация и авторизация с MySQL</h1>';
++$content = '<h1>Регистрация и авторизация с Supabase PostgreSQL</h1>';
+ 
+-if ($resolved['missing'] !== []) {
+-    $content .= '<section><h2>Конфигурация БД не завершена</h2><p class="muted">Для полноценной проверки задайте переменные: '
+-        . escape_html(implode(', ', $resolved['missing']))
+-        . '.</p></section>';
+-}
+-
+-if ($user !== null) {
++if ($dbStatus['available'] === false) {
++    $content .= assignment13_db_notice_html($dbStatus);
++} elseif ($user !== null) {
+     $content .= '<section><h2>Вы вошли в систему</h2>'
+         . '<p>Имя: <strong>' . escape_html((string) ($user['full_name'] ?? '')) . '</strong></p>'
+         . '<p>Email: <strong>' . escape_html((string) ($user['email'] ?? '')) . '</strong></p>'

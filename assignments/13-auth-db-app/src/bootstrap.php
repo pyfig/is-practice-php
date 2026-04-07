@@ -12,15 +12,15 @@ function escape_html(string $value): string
 
 function app_base_path(): string
 {
-    $basePath = $_SERVER['APP_BASE_PATH'] ?? ASSIGNMENT13_DEFAULT_BASE_PATH;
+    $basePath = $_SERVER['APP_BASE_PATH'] ?? '';
 
     if (!is_string($basePath) || $basePath === '') {
-        return ASSIGNMENT13_DEFAULT_BASE_PATH;
+        return '';
     }
 
     $normalizedBasePath = '/' . trim($basePath, '/');
 
-    return $normalizedBasePath === '/' ? ASSIGNMENT13_DEFAULT_BASE_PATH : $normalizedBasePath;
+    return $normalizedBasePath === '/' ? '' : $normalizedBasePath;
 }
 
 function app_request_path(): string
@@ -33,6 +33,10 @@ function app_request_path(): string
     $uriPath = parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
     $uriPath = is_string($uriPath) && $uriPath !== '' ? $uriPath : '/';
     $basePath = app_base_path();
+
+    if ($basePath === '') {
+        return $uriPath;
+    }
 
     if ($uriPath === $basePath) {
         return '/';
@@ -49,18 +53,18 @@ function app_url(string $path = ''): string
 {
     $basePath = app_base_path();
     if ($path === '' || $path === '/') {
-        return $basePath;
+        return $basePath === '' ? '/' : $basePath;
     }
 
     if ($path[0] === '?') {
-        return $basePath . $path;
+        return ($basePath === '' ? '/' : $basePath) . $path;
     }
 
     if (strpos($path, '/?') === 0) {
-        return $basePath . substr($path, 1);
+        return ($basePath === '' ? '/' : $basePath) . substr($path, 1);
     }
 
-    return $basePath . '/' . ltrim($path, '/');
+    return ($basePath === '' ? '' : $basePath) . '/' . ltrim($path, '/');
 }
 
 function redirect_to(string $path): void
@@ -72,15 +76,27 @@ function redirect_to(string $path): void
 function assignment13_is_https_request(): bool
 {
     $https = $_SERVER['HTTPS'] ?? '';
+    $forwardedProto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
+    $forwardedSsl = $_SERVER['HTTP_X_FORWARDED_SSL'] ?? '';
 
-    return is_string($https) && $https !== '' && $https !== 'off';
+    if (is_string($https) && $https !== '' && $https !== 'off') {
+        return true;
+    }
+
+    if (is_string($forwardedProto) && strtolower($forwardedProto) === 'https') {
+        return true;
+    }
+
+    return is_string($forwardedSsl) && strtolower($forwardedSsl) === 'on';
 }
 
 function assignment13_auth_cookie_options(int $expires): array
 {
+    $cookiePath = app_base_path();
+
     return [
         'expires' => $expires,
-        'path' => app_base_path(),
+        'path' => $cookiePath === '' ? '/' : $cookiePath,
         'secure' => assignment13_is_https_request(),
         'httponly' => true,
         'samesite' => 'Lax',
@@ -114,6 +130,23 @@ function status_message(): ?array
     ];
 
     return $messages[$status] ?? null;
+}
+
+function assignment13_db_notice_html(array $dbStatus): string
+{
+    if (($dbStatus['available'] ?? false) === true) {
+        return '';
+    }
+
+    $heading = ($dbStatus['reason'] ?? null) === 'config_missing'
+        ? 'Конфигурация БД не завершена'
+        : 'База данных временно недоступна';
+
+    return '<section class="flash-error"><h2>'
+        . escape_html($heading)
+        . '</h2><p class="muted">'
+        . escape_html((string) ($dbStatus['message'] ?? 'Ошибка подключения к базе данных.'))
+        . '</p></section>';
 }
 
 function render_layout(string $title, string $content): void

@@ -16,7 +16,8 @@ Build registration, login, logout, and authenticated user display with database 
 
 ## Deliverable shape
 - Browser-oriented assignment with `public/` entrypoint.
-- Dedicated MySQL database for this assignment only.
+- Dedicated Supabase PostgreSQL database for this assignment only.
+- Auto-initialization of database schema on first connection.
 - Reset and bootstrap assets for repeatable verification.
 
 ## Validations and fixed defaults

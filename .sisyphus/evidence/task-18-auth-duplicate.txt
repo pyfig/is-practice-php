@@ -1,0 +1,14 @@
+Assignment 13 duplicate-email verification
+Date: 2026-04-07
+
+Precondition:
+- Existing user: test@example.com
+
+Duplicate registration request:
+- POST /register.php
+- Payload: full_name=Ivan Petrov 2&email=test@example.com&password=pass9999
+- Result: HTTP/1.1 200 OK
+- Page contains: "Пользователь с таким email уже существует."
+
+SQL assertion via Supabase MCP:
+- duplicate_row_count for test@example.com = 1

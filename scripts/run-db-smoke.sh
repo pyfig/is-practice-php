@@ -6,48 +6,86 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 bash "${ROOT_DIR}/scripts/reset-auth-db.sh"
 
-mysql_query() {
-    local sql="$1"
-    MYSQL_PWD="$AUTH_DB_PASSWORD" mysql \
-        --protocol=TCP \
-        -h "$AUTH_DB_HOST" \
-        -P "$AUTH_DB_PORT" \
-        -u "$AUTH_DB_USER" \
-        --default-character-set=utf8mb4 \
-        --batch \
-        --skip-column-names \
-        "$AUTH_DB_NAME" \
-        -e "$sql"
+smoke_sql="$(mktemp)"
+cleanup() {
+    rm -f "${smoke_sql}"
 }
+trap cleanup EXIT
 
-users_count="$(mysql_query "SELECT COUNT(*) FROM users;")"
-if [ "$users_count" != "0" ]; then
-    printf 'Smoke check failed: expected empty users table after reset, got %s rows.\n' "$users_count" >&2
-    exit 1
-fi
+cat > "${smoke_sql}" <<'SQL'
+DO $$
+DECLARE
+    users_count bigint;
+    sessions_count bigint;
+    email_unique bigint;
+    token_unique bigint;
+    foreign_key_count bigint;
+BEGIN
+    SELECT COUNT(*) INTO users_count FROM public.users;
+    IF users_count <> 0 THEN
+        RAISE EXCEPTION 'Smoke check failed: expected empty users table after reset.';
+    END IF;
 
-user_sessions_count="$(mysql_query "SELECT COUNT(*) FROM user_sessions;")"
-if [ "$user_sessions_count" != "0" ]; then
-    printf 'Smoke check failed: expected empty user_sessions table after reset, got %s rows.\n' "$user_sessions_count" >&2
-    exit 1
-fi
+    SELECT COUNT(*) INTO sessions_count FROM public.user_sessions;
+    IF sessions_count <> 0 THEN
+        RAISE EXCEPTION 'Smoke check failed: expected empty user_sessions table after reset.';
+    END IF;
 
-email_unique="$(mysql_query "SELECT COUNT(*) FROM information_schema.statistics WHERE table_schema = '$AUTH_DB_NAME' AND table_name = 'users' AND column_name = 'email' AND non_unique = 0;")"
-if [ "$email_unique" = "0" ]; then
-    printf 'Smoke check failed: users.email unique constraint is missing.\n' >&2
-    exit 1
-fi
+    SELECT COUNT(*) INTO email_unique
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+      ON tc.constraint_catalog = kcu.constraint_catalog
+     AND tc.constraint_schema = kcu.constraint_schema
+     AND tc.constraint_name = kcu.constraint_name
+     AND tc.table_name = kcu.table_name
+    WHERE tc.table_schema = 'public'
+      AND tc.table_name = 'users'
+      AND tc.constraint_type = 'UNIQUE'
+      AND kcu.column_name = 'email';
 
-token_hash_unique="$(mysql_query "SELECT COUNT(*) FROM information_schema.statistics WHERE table_schema = '$AUTH_DB_NAME' AND table_name = 'user_sessions' AND column_name = 'token_hash' AND non_unique = 0;")"
-if [ "$token_hash_unique" = "0" ]; then
-    printf 'Smoke check failed: user_sessions.token_hash unique constraint is missing.\n' >&2
-    exit 1
-fi
+    IF email_unique = 0 THEN
+        RAISE EXCEPTION 'Smoke check failed: users.email unique constraint is missing.';
+    END IF;
 
-fk_count="$(mysql_query "SELECT COUNT(*) FROM information_schema.referential_constraints WHERE constraint_schema = '$AUTH_DB_NAME' AND table_name = 'user_sessions' AND referenced_table_name = 'users';")"
-if [ "$fk_count" = "0" ]; then
-    printf 'Smoke check failed: user_sessions.user_id foreign key to users is missing.\n' >&2
-    exit 1
-fi
+    SELECT COUNT(*) INTO token_unique
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+      ON tc.constraint_catalog = kcu.constraint_catalog
+     AND tc.constraint_schema = kcu.constraint_schema
+     AND tc.constraint_name = kcu.constraint_name
+     AND tc.table_name = kcu.table_name
+    WHERE tc.table_schema = 'public'
+      AND tc.table_name = 'user_sessions'
+      AND tc.constraint_type = 'UNIQUE'
+      AND kcu.column_name = 'token_hash';
 
-printf 'DB smoke checks passed for %s.users and %s.user_sessions.\n' "$AUTH_DB_NAME" "$AUTH_DB_NAME"
+    IF token_unique = 0 THEN
+        RAISE EXCEPTION 'Smoke check failed: user_sessions.token_hash unique constraint is missing.';
+    END IF;
+
+    SELECT COUNT(*) INTO foreign_key_count
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+      ON tc.constraint_catalog = kcu.constraint_catalog
+     AND tc.constraint_schema = kcu.constraint_schema
+     AND tc.constraint_name = kcu.constraint_name
+     AND tc.table_name = kcu.table_name
+    JOIN information_schema.constraint_column_usage ccu
+      ON tc.constraint_catalog = ccu.constraint_catalog
+     AND tc.constraint_schema = ccu.constraint_schema
+     AND tc.constraint_name = ccu.constraint_name
+    WHERE tc.table_schema = 'public'
+      AND tc.table_name = 'user_sessions'
+      AND tc.constraint_type = 'FOREIGN KEY'
+      AND kcu.column_name = 'user_id'
+      AND ccu.table_name = 'users';
+
+    IF foreign_key_count = 0 THEN
+        RAISE EXCEPTION 'Smoke check failed: user_sessions.user_id foreign key to users is missing.';
+    END IF;
+END $$;
+SQL
+
+npx supabase db query --linked --file "${smoke_sql}" >/dev/null
+
+printf 'DB smoke checks passed for public.users and public.user_sessions.\n'

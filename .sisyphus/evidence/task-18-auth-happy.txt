@@ -1,0 +1,39 @@
+Assignment 13 happy-path verification
+Date: 2026-04-07
+
+Reset:
+- bash scripts/reset-auth-db.sh
+- Result: Database reset complete: public.users and public.user_sessions recreated successfully.
+
+Registration request:
+- POST /register.php
+- Payload: full_name=Ivan Petrov&email=test@example.com&password=pass1234
+- Result: HTTP/1.1 303 See Other
+- Location: /login.php?status=registered
+
+SQL assertions via Supabase MCP:
+- users row_count for test@example.com = 1
+- password_hash length = 60
+- is_hashed = true
+- persisted row = Ivan Petrov / test@example.com
+
+Login request:
+- POST /login.php
+- Payload: email=test@example.com&password=pass1234
+- Result: HTTP/1.1 303 See Other
+- Location: /?status=logged-in
+- Set-Cookie: assignment13_auth=...
+
+Authenticated home request:
+- GET /
+- Result: page shows "Вы вошли в систему"
+- Result: page shows Ivan Petrov / test@example.com / created_at
+
+Logout request:
+- GET /logout.php
+- Result: HTTP/1.1 303 See Other
+- Location: /login.php?status=logged-out
+
+Post-logout checks:
+- SQL active_session_rows = 0
+- GET / returns guest state

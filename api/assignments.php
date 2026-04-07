@@ -349,7 +349,6 @@ function vercel_render_root_placeholder(array $manifest): void
 
     echo '    <main class="launchpad-main" role="main">' . "\n";
     echo '        <div class="launchpad-content">' . "\n";
-    echo '            <h1 class="launchpad-title">13 Практических Работ</h1>' . "\n";
     echo '            <div class="project-grid" id="projectGrid" role="list">' . "\n";
 
     foreach ($assignments as $slug => $meta) {

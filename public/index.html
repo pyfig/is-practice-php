@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Labs // Assignment Launchpad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Terminal Phosphor Palette */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f1117;
+            --bg-tertiary: #151920;
+            --bg-card: rgba(21, 25, 32, 0.6);
+            
+            /* Phosphor Glow Colors */
+            --phosphor-cyan: #00f0ff;
+            --phosphor-green: #39ff14;
+            --phosphor-amber: #ffb000;
+            --phosphor-pink: #ff0080;
+            --phosphor-purple: #bf00ff;
+            
+            /* Glow Intensities */
+            --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(0, 240, 255, 0.2);
+            --glow-green: 0 0 20px rgba(57, 255, 20, 0.4), 0 0 40px rgba(57, 255, 20, 0.2);
+            --glow-amber: 0 0 20px rgba(255, 176, 0, 0.4), 0 0 40px rgba(255, 176, 0, 0.2);
+            --glow-pink: 0 0 20px rgba(255, 0, 128, 0.4), 0 0 40px rgba(255, 0, 128, 0.2);
+            
+            /* Text Colors */
+            --text-primary: #e8f4f8;
+            --text-secondary: #8a9ba8;
+            --text-muted: #4a5568;
+            --text-dim: #2d3748;
+            
+            /* Grid & Spacing */
+            --grid-gap: 1.5rem;
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2.5rem;
+            --space-2xl: 4rem;
+            
+            /* Typography */
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            background: var(--bg-primary);
+        }
+
+        body {
+            font-family: var(--font-mono);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* CRT Scanline Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.03) 0px,
+                rgba(0, 0, 0, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            animation: scanlines 8s linear infinite;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(2px); }
+        }
+
+        /* Subtle Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.015;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Gradient Orb Decoration */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--phosphor-cyan);
+            top: -200px;
+            right: -100px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--phosphor-purple);
+            bottom: -100px;
+            left: -100px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Header */
+        .terminal-header {
+            position: relative;
+            z-index: 10;
+            padding: var(--space-xl);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-icon::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--phosphor-cyan);
+            border-radius: 4px;
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        .brand-icon::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            background: linear-gradient(135deg, var(--phosphor-cyan), var(--phosphor-green));
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 0 5px var(--phosphor-cyan); }
+            50% { box-shadow: 0 0 20px var(--phosphor-cyan), 0 0 30px var(--phosphor-cyan); }
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .brand-subtitle {
+            font-size: 0.75rem;
+            color: var(--phosphor-cyan);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* Search Terminal */
+        .search-container {
+            position: relative;
+            max-width: 600px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--text-dim);
+            border-radius: 4px;
+            padding: var(--space-md) var(--space-lg);
+            transition: all var(--transition-normal);
+        }
+
+        .search-wrapper:focus-within {
+            border-color: var(--phosphor-cyan);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .search-prompt {
+            color: var(--phosphor-green);
+            margin-right: var(--space-sm);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.9375rem;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: var(--phosphor-cyan);
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-xl);
+        }
+
+        .section-header {
+            margin-bottom: var(--space-xl);
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .section-count {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        .section-count::before {
+            content: '// ';
+            color: var(--phosphor-cyan);
+        }
+
+        /* Project Grid - Asymmetric Layout */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--grid-gap);
+        }
+
+        @media (min-width: 1024px) {
+            .project-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            /* Create visual rhythm with spanning */
+            .project-card:nth-child(6n+1) {
+                grid-column: span 2;
+            }
+            
+            .project-card:nth-child(6n+4) {
+                grid-row: span 2;
+            }
+        }
+
+        /* Project Cards */
+        .project-card {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--text-dim);
+            border-radius: 4px;
+            padding: var(--space-lg);
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            transition: all var(--transition-normal);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--phosphor-cyan), var(--phosphor-green));
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .project-card:hover {
+            border-color: var(--phosphor-cyan);
+            transform: translateY(-4px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-number {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .card-number::before {
+            content: '#';
+            color: var(--phosphor-cyan);
+        }
+
+        .card-type {
+            font-size: 0.625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        .card-type--cli {
+            background: rgba(57, 255, 20, 0.1);
+            color: var(--phosphor-green);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+        }
+
+        .card-type--web {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--phosphor-cyan);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .card-type--stateful {
+            background: rgba(255, 0, 128, 0.1);
+            color: var(--phosphor-pink);
+            border: 1px solid rgba(255, 0, 128, 0.3);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .card-subtitle {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: auto;
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--text-dim);
+        }
+
+        .card-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .card-meta-item::before {
+            content: '>';
+            color: var(--phosphor-cyan);
+        }
+
+        /* Status Indicators */
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--phosphor-green);
+            box-shadow: 0 0 8px var(--phosphor-green);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-2xl);
+            text-align: center;
+            border: 1px dashed var(--text-dim);
+            border-radius: 4px;
+            margin-top: var(--space-xl);
+        }
+
+        .empty-state.visible {
+            display: flex;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-md);
+            opacity: 0.5;
+        }
+
+        .empty-state-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-state-message {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-card {
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0ms; }
+        .project-card:nth-child(2) { animation-delay: 50ms; }
+        .project-card:nth-child(3) { animation-delay: 100ms; }
+        .project-card:nth-child(4) { animation-delay: 150ms; }
+        .project-card:nth-child(5) { animation-delay: 200ms; }
+        .project-card:nth-child(6) { animation-delay: 250ms; }
+        .project-card:nth-child(7) { animation-delay: 300ms; }
+        .project-card:nth-child(8) { animation-delay: 350ms; }
+        .project-card:nth-child(9) { animation-delay: 400ms; }
+        .project-card:nth-child(10) { animation-delay: 450ms; }
+        .project-card:nth-child(11) { animation-delay: 500ms; }
+        .project-card:nth-child(12) { animation-delay: 550ms; }
+        .project-card:nth-child(13) { animation-delay: 600ms; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: var(--space-lg);
+            }
+            
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .brand-title {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus Visible */
+        .project-card:focus-visible {
+            outline: 2px solid var(--phosphor-cyan);
+            outline-offset: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <header class="terminal-header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="brand-icon"></div>
+                <div class="brand-text">
+                    <div class="brand-title">PHP Labs</div>
+                    <div class="brand-subtitle">Assignment Launchpad v2.0</div>
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <span class="search-prompt">$</span>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        placeholder="find assignments..."
+                        autocomplete="off"
+                    />
+                    <span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="section-header">
+            <h1 class="section-title">Assignments</h1>
+            <span class="section-count" id="assignmentCount">13 modules</span>
+        </div>
+
+        <div class="project-grid" id="projectGrid"></div>
+
+        <div class="empty-state" id="emptyState">
+            <div class="empty-state-icon">⌿</div>
+            <h2 class="empty-state-title">No matches found</h2>
+            <p class="empty-state-message">Try a different search term or clear the filter</p>
+        </div>
+    </main>
+
+    <script>
+        const assignments = [
+            { id: '01', name: 'PHP Basics', subtitle: 'Variables, types, and operators', type: 'cli', meta: 'Foundation' },
+            { id: '02', name: 'Control Structures', subtitle: 'Conditionals and loops', type: 'cli', meta: 'Logic' },
+            { id: '03', name: 'Arrays', subtitle: 'Indexed array operations', type: 'cli', meta: 'Data' },
+            { id: '04', name: 'Associative Arrays', subtitle: 'Key-value data structures', type: 'cli', meta: 'Data' },
+            { id: '05', name: 'Multidimensional Arrays', subtitle: 'Nested data structures', type: 'cli', meta: 'Data' },
+            { id: '06', name: 'User Functions', subtitle: 'Custom function definitions', type: 'cli', meta: 'Logic' },
+            { id: '07', name: 'Standard Functions', subtitle: 'Built-in PHP functions', type: 'cli', meta: 'Foundation' },
+            { id: '08', name: 'String Generation', subtitle: 'Dynamic content creation', type: 'web', meta: 'Output' },
+            { id: '09', name: 'Forms', subtitle: 'HTML form handling', type: 'web', meta: 'Input' },
+            { id: '10', name: 'HTTP Basics', subtitle: 'Request/response handling', type: 'web', meta: 'Protocol' },
+            { id: '11', name: 'Sessions', subtitle: 'State management', type: 'stateful', meta: 'State' },
+            { id: '12', name: 'Regex Validation', subtitle: 'Pattern matching', type: 'web', meta: 'Validation' },
+            { id: '13', name: 'Auth & Database', subtitle: 'Authentication system', type: 'stateful', meta: 'Full Stack' }
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const projectGrid = document.getElementById('projectGrid');
+        const emptyState = document.getElementById('emptyState');
+        const assignmentCount = document.getElementById('assignmentCount');
+
+        function renderAssignments(assignmentsToRender) {
+            projectGrid.innerHTML = assignmentsToRender.map((assignment, index) => `
+                <a 
+                    href="/${assignment.id}-${assignment.name.toLowerCase().replace(/\s+/g, '-')}"
+                    class="project-card"
+                    data-name="${assignment.name.toLowerCase()}"
+                    style="animation-delay: ${index * 50}ms"
+                >
+                    <div class="card-header">
+                        <span class="card-number">${assignment.id}</span>
+                        <span class="card-type card-type--${assignment.type}">${assignment.type}</span>
+                    </div>
+                    <div class="card-content">
+                        <h2 class="card-title">${escapeHtml(assignment.name)}</h2>
+                        <p class="card-subtitle">${escapeHtml(assignment.subtitle)}</p>
+                    </div>
+                    <div class="card-meta">
+                        <span class="card-meta-item">${assignment.meta}</span>
+                        <span class="status-dot"></span>
+                    </div>
+                </a>
+            `).join('');
+
+            assignmentCount.textContent = `${assignmentsToRender.length} module${assignmentsToRender.length !== 1 ? 's' : ''}`;
+        }
+
+        function filterAssignments(query) {
+            const normalizedQuery = query.toLowerCase().trim();
+            
+            if (!normalizedQuery) {
+                renderAssignments(assignments);
+                emptyState.classList.remove('visible');
+                projectGrid.style.display = 'grid';
+                return;
+            }
+
+            const filtered = assignments.filter(a => 
+                a.name.toLowerCase().includes(normalizedQuery) ||
+                a.subtitle.toLowerCase().includes(normalizedQuery) ||
+                a.meta.toLowerCase().includes(normalizedQuery)
+            );
+
+            if (filtered.length === 0) {
+                projectGrid.style.display = 'none';
+                emptyState.classList.add('visible');
+            } else {
+                renderAssignments(filtered);
+                emptyState.classList.remove('visible');
+                projectGrid.style.display = 'grid';
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            filterAssignments(e.target.value);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            if (e.key === 'Escape' && document.activeElement === searchInput) {
+                searchInput.value = '';
+                filterAssignments('');
+                searchInput.blur();
+            }
+        });
+
+        renderAssignments(assignments);
+    </script>
+</body>
+</html>

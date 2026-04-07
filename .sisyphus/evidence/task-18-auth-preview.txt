@@ -1,0 +1,10 @@
+Assignment 13 Vercel preview verification
+Date: 2026-04-07
+Preview URL: https://ilyasheklakovphpmysql-nbs52t21a-pyfigs-projects.vercel.app
+Inspector URL: https://vercel.com/pyfigs-projects/ilya_sheklakov_php_mysql/FxFUYnWsAkzvbS1grLsYyQM8FMpF
+
+Notes:
+- Raw preview URL is protected by Vercel Authentication and returns HTTP 401 without a share/bypass token.
+- Share-access URL for /13-auth-db-app returned HTTP 200 and rendered the assignment 13 guest page.
+- Share-access URL for /13-auth-db-app/register.php returned HTTP 200 and rendered the registration form.
+- The rendered HTML used the mounted Vercel base path /13-auth-db-app and did not show the DB configuration error notice.

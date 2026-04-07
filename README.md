@@ -39,11 +39,59 @@ This repository keeps each practical assignment in its own isolated folder under
 
 This project is configured for deployment on Vercel using the `vercel-php` runtime.
 
+**Two database options available:**
+- MySQL (traditional)
+- Supabase PostgreSQL (cloud-native, recommended)
+
 ### Prerequisites
 
 - Node.js and npm installed
 - Vercel CLI: `npm i -g vercel`
-- MySQL database for assignment 13 (local or cloud)
+- Database for assignment 13 (MySQL local/cloud OR Supabase PostgreSQL)
+
+## Supabase + Vercel Deployment (Recommended)
+
+Assignment 13 now uses Supabase as the remote database backend:
+- application runtime talks to Supabase PostgREST with a server-side key
+- schema reset/smoke scripts run against the linked Supabase project via Supabase CLI / Management API
+
+### Quick Deploy
+
+1. **Create or link a Supabase Project**
+   - Sign up at https://supabase.com
+   - Create a project
+   - Link this repo once: `npx supabase link --project-ref YOUR_PROJECT_REF`
+
+2. **Configure & Deploy**
+   ```bash
+   cp .env.supabase.local.example .env.supabase.local
+   # Fill SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY / ASSIGNMENT13_AUTH_SECRET
+   bash scripts/reset-auth-db.sh
+   bash scripts/run-db-smoke.sh
+   ```
+
+3. **Preview deploy to Vercel**
+   ```bash
+   vercel env add SUPABASE_URL preview
+   vercel env add SUPABASE_SERVICE_ROLE_KEY preview
+   vercel env add ASSIGNMENT13_AUTH_SECRET preview
+   vercel deploy -y
+   ```
+
+4. **Manual Local Setup (if needed)**
+   
+   Create `.env.supabase.local`:
+   ```bash
+   SUPABASE_URL=https://xxxxxxxxxxxxxxxxxxxx.supabase.co
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-or-secret-key
+   ASSIGNMENT13_AUTH_SECRET=$(openssl rand -base64 32)
+   ```
+
+See `assignments/13-auth-db-app/SUPABASE_SETUP.md` for detailed instructions about the linked-project flow.
+
+## MySQL Deployment (Alternative)
+
+Use this if you prefer traditional MySQL database.
 
 ### Environment Setup
 

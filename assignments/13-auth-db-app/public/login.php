@@ -4,14 +4,12 @@ declare(strict_types=1);
 require dirname(__DIR__) . '/src/bootstrap.php';
 require_once dirname(__DIR__) . '/src/auth.php';
 
-// Check DB availability first
-$dbStatus = auth_db_status();
+$dbStatus = auth_db_ready_status();
 $dbAvailable = $dbStatus['available'];
 
 $email = '';
 $errors = [];
 
-// Only process POST if DB is available
 if ($dbAvailable && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim((string) ($_POST['email'] ?? ''));
     $password = trim((string) ($_POST['password'] ?? ''));
@@ -37,17 +35,8 @@ if ($dbAvailable && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $content = '<h1>Вход</h1>';
 
-// Show DB unavailable notice if applicable
 if ($dbAvailable === false) {
-    if ($dbStatus['reason'] === 'config_missing') {
-        $content .= '<section class="flash-error"><h2>Конфигурация БД не завершена</h2><p>'
-            . escape_html($dbStatus['message'])
-            . '</p></section>';
-    } else {
-        $content .= '<section class="flash-error"><h2>База данных временно недоступна</h2><p>'
-            . escape_html($dbStatus['message'])
-            . '</p></section>';
-    }
+    $content .= assignment13_db_notice_html($dbStatus);
 }
 
 if ($errors !== []) {
