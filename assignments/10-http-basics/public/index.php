@@ -65,7 +65,6 @@ function send_html(int $statusCode, string $html, array $headers = []): void
     }
 
     echo $html;
-    exit;
 }
 
 function send_text(int $statusCode, string $body, array $headers = []): void
@@ -77,7 +76,6 @@ function send_text(int $statusCode, string $body, array $headers = []): void
     }
 
     echo $body;
-    exit;
 }
 
 function all_request_headers(): array
